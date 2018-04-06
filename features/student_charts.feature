@@ -6,4 +6,4 @@ Feature: Student Charts navigation
 	
 Scenario: Student navigates charts
 	Given I am on the "Charts"
-	Then I should be able to see a graph showing my progress every sem
+	Then I should be able to see a graph showing my progress every semester
