@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  degree: one
+  subject: one
+  isMajor: false
+  isGE: false
+  isRequired: false
+
+two:
+  degree: two
+  subject: two
+  isMajor: false
+  isGE: false
+  isRequired: false

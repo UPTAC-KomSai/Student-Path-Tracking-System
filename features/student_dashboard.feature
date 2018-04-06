@@ -9,7 +9,6 @@ Scenario: Student navigates dashboard
 	Then I should be able to see button "Account information"
 	And I should be able to see button "Schedule"
 	And I should be able to see button "Grade"
-	And I should be able to see button "Class syllabus"
 	And I should be able to see button "Settings"
 	And I should be able to see button "Charts"
 
