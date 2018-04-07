@@ -52,6 +52,7 @@ group :development, :test do
   gem 'cucumber-rails-training-wheels'
   # Use database cleaner to remove added entries during tests
   gem 'database_cleaner', '1.6.0'
+   gem 'rspec-rails', '~> 3.7'
 end
 
 group :production do
