@@ -1,19 +1,18 @@
 class RecordsController < ApplicationController
-  def index   
+  def index 
   end
 
   def home
-  	a = Mechanize.new
-  	a.get('http://crs.upv.edu.ph/') do |page|
-  		# Click the Student link
-  		login_page = a.click(page.link_with(:text => /Student/))
-  		
-  		# Submit the login form
-  		login_form = login_page.form('StudentLogin')
-  		login_form.studentIDNumber = params[:student_number]  			
-  		login_form.password = params[:password]  		  		
-  		pp login_form  		
-  	end
+    a = Mechanize.new
+    stud_id = params[:student_number]
+    password = params[:password]  	
+    String url = 'http://crs.upv.edu.ph/tacloban/student/loginAuthenticate.jsp?studentIDYear=&studentIDNumber='+stud_id+'&password='+password
+        
+    login = a.get(url)
+    
+    if(login.uri.to_s.include?("errorMsg"))
+      redirect_to action: "index"
+    end
   end
   
   def personalProfile
