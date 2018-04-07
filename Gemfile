@@ -16,6 +16,7 @@ gem 'sass-rails', '~> 5.0'
 gem 'uglifier', '>= 1.3.0'
 # See https://github.com/rails/execjs#readme for more supported runtimes
 # gem 'therubyracer', platforms: :ruby
+gem 'autoprefixer-rails'
 
 # Use CoffeeScript for .coffee assets and views
 gem 'coffee-rails', '~> 4.2'
@@ -33,7 +34,6 @@ gem 'jbuilder', '~> 2.5'
 
 # Use bootstrap as the front-end component library
 gem 'bootstrap-sass', '~> 3.3.7'
-gem 'autoprefixer-rails'
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
 # Use Haml as the templating library
@@ -51,7 +51,7 @@ group :development, :test do
   gem 'cucumber-rails', :require => false
   gem 'cucumber-rails-training-wheels'
   # Use database cleaner to remove added entries during tests
-  gem 'database_cleaner'
+  gem 'database_cleaner', '~>1.6.0'
 end
 
 group :production do
