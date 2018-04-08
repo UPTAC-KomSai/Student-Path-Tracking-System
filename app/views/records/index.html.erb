@@ -2,7 +2,7 @@
 
     <%= stylesheet_link_tag "index" %>
 
-    <title>The Clean_Classy_Registration Website Template | Home :: w3layouts</title>
+    <title>SPTS</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -46,11 +46,14 @@
   <!--320x50-->  
     <div class="tab style-1" style="width: 320px;">                               
               <dl>
-                <dd class="student" style="width: 159px;"><a class="student active fa fa-graduation-cap" href="#tab1"> </a></dd>
-                <dd class="faculty" style="width: 160px;"><a class="faculty fa fa-user-circle" href="#tab2"> </a></dd>                                
+                <dd class="student" style="width: 159px;"><a class="student active fa fa-graduation-cap" href="#student_login"> </a></dd>
+                <dd class="faculty" style="width: 160px;"><a class="faculty fa fa-user-circle" href="#faculty_login"> </a></dd>                                
               </dl>       
               <ul>
-                <p style="padding: 10px;" align="center">Login as student</p>
+                <p style="padding: 10px;" align="center">Login as student</p> 
+                <%if flash[:error]%>           
+                  <p class="error" align="center"><%= flash[:error]%></p>
+                <%end%>
                 <li class="active">
                   <div class="form"> 
                     <form action="/dashboard" method="post">   

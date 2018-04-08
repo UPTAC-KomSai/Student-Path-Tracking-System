@@ -49,7 +49,7 @@ group :development, :test do
   
   gem 'cucumber-rails', :require => false
   gem 'cucumber-rails-training-wheels'
-  gem 'database_cleaner'
+  gem 'database_cleaner', '1.6.0'
   gem 'rspec-rails', '~> 3.7'
 end
 
