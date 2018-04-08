@@ -1,16 +1,28 @@
 class RecordsController < ApplicationController
+
   @stud_info
+  @@id 
+  @@pw 
   def index 
   end
 
   def home
       a = Mechanize.new
-      stud_id = params[:student_number]
-      password = params[:password]  	
+    
+      stud_id  = params[:student_number]
+      password = params[:password] 
+      
+      if stud_id != nil and password != nil
+         @@id = params[:student_number]
+         @@pw = params[:password]  	
+       
+      elsif stud_id == nil and password == nil
+         stud_id  = @@id
+         password = @@pw
+      end
       
       e = "Student ID|:|Name|Degree Level|Degree Program|Year Level|Scholarship"
       
-      if(password != nil and stud_id != nil)
         String url = 'http://crs.upv.edu.ph/tacloban/student/loginAuthenticate.jsp?studentIDYear=&studentIDNumber='+stud_id+'&password='+password
         
         login = a.get(url)
@@ -28,10 +40,10 @@ class RecordsController < ApplicationController
         
         @stud_info = info
         
+        
         if(login.uri.to_s.include?("errorMsg"))
           redirect_to action: "index"
         end
-      end
   end
   
   def personalProfile
