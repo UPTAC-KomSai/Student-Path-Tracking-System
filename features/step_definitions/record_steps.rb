@@ -5,7 +5,7 @@ Given("I am on the landing page") do
 end
 
 Then("I should see the \"Login Form\"") do
-  expect(page).to have_selector("input", :count => 2)
+  expect(page).to have_selector("input", :count => 6)
 end
 
 Given("I login as {string}") do |string|

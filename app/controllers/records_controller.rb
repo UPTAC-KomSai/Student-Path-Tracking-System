@@ -36,13 +36,14 @@ class RecordsController < ApplicationController
             if !(w.gsub(/\A[[:space:]]+|[[:space:]]+\z/, '') == "")
               info << w.gsub(/\A[[:space:]]+|[[:space:]]+\z/, '')
             end
-        end
+        end              
         
         @stud_info = info
         
         
         if(login.uri.to_s.include?("errorMsg"))
-          redirect_to action: "index"
+          flash[:error] = "Your credentials do not match our records!"
+          redirect_to "/"
         end
   end
   
