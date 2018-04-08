@@ -7,6 +7,9 @@ class RecordsController < ApplicationController
       a = Mechanize.new
       stud_id = params[:student_number]
       password = params[:password]  	
+
+      puts "student id: " + stud_id
+      puts "password: " + password
       
       e = "Student ID|:|Name|Degree Level|Degree Program|Year Level|Scholarship"
       
@@ -25,6 +28,8 @@ class RecordsController < ApplicationController
               info << w.gsub(/\A[[:space:]]+|[[:space:]]+\z/, '')
             end
         end
+        
+        pp login
         
         @stud_info = info
         
