@@ -16,7 +16,6 @@ gem 'sass-rails', '~> 5.0'
 gem 'uglifier', '>= 1.3.0'
 # See https://github.com/rails/execjs#readme for more supported runtimes
 # gem 'therubyracer', platforms: :ruby
-gem 'autoprefixer-rails'
 
 # Use CoffeeScript for .coffee assets and views
 gem 'coffee-rails', '~> 4.2'
@@ -33,12 +32,12 @@ gem 'jbuilder', '~> 2.5'
 # gem 'capistrano-rails', group: :development
 
 # Use bootstrap as the front-end component library
-gem 'bootstrap-sass', '~> 3.3.7'
-# Use jquery as the JavaScript library
+gem 'bootstrap', '~> 4.0.0'
+gem 'autoprefixer-rails'
+# Use Font Awesome for scalable vector icons
+gem 'font-awesome-rails'
+# Use jquery as the javascript library
 gem 'jquery-rails'
-# Use Haml as the templating library
-gem 'haml'
-gem 'haml-rails', '~> 1.0'
 # Use nokogiri to scrape data from crs.upv.edu.ph
 gem 'nokogiri'
 # Use mechanize to automate actions in crs.upv.edu.ph
@@ -51,22 +50,20 @@ group :development, :test do
   gem 'cucumber-rails', :require => false
   gem 'cucumber-rails-training-wheels'
   # Use database cleaner to remove added entries during tests
-  gem 'database_cleaner', '1.6.0'
-   gem 'rspec-rails', '~> 3.7'
+  gem 'database_cleaner', '~> 1.6.0'
+  # Use rspec for tests
+  gem 'rspec-rails', '~> 3.7'
+  # Call 'byebug' anywhere in the code to stop execution and get a debugger console
+  gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
+  # Adds support for Capybara system testing and selenium driver
+  gem 'capybara', '~> 2.13'
+  gem 'selenium-webdriver'
 end
 
 group :production do
   # Use pg as the database for Active Record
   gem 'pg'
   gem 'rails_12factor'
-end
-
-group :development, :test do
-  # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-  gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
-  # Adds support for Capybara system testing and selenium driver
-  gem 'capybara', '~> 2.13'
-  gem 'selenium-webdriver'
 end
 
 group :development do

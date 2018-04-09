@@ -6,17 +6,24 @@ Feature: User login
 Scenario: User visits the site
 	Given I am on the landing page
 	Then I should see the "Login Form"
-
-Scenario: Student logs in
+  
+Scenario: Student logs in successfully
 	Given I login as "Student"
-	And I fill in "Student Number" with "201514567"
-	And I fill in "Password" with "201514567"
+	And I fill in "Student Number" with "201510778"
+	And I fill in "Password" with "201510778"
 	And I click "Login"
 	Then I should see my dashboard
+  
+Scenario: Student logs in with wrong credentials
+	Given I login as "Student"
+	And I fill in "Student Number" with "201510778"
+	And I fill in "Password" with "201510"
+	And I click "Login"
+	Then I should see the login page
 
-Scenario: Faculty logs in	
+Scenario: Faculty logs in	with wrong credentials
 	Given I login as "Faculty"
 	And I fill in "Username" with "juan"
 	And I fill in "Password" with "*********"
 	And I click "Login"
-	Then I should see my dashboard
+	Then I should see the login page

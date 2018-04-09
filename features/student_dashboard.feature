@@ -6,10 +6,11 @@ Feature: Student Dashboard navigation
 
 Scenario: Student navigates dashboard
 	Given I am on the "Dashboard"
-	Then I should be able to see button "Account information"
+	Then I should be able to see button "Personal Profile"
 	And I should be able to see button "Schedule"
 	And I should be able to see button "Grade"
-	And I should be able to see button "Settings"
+	And I should be able to see button "Schedule"
 	And I should be able to see button "Charts"
+  And I should be able to see button "Study Plan"
 
 

@@ -1,10 +1,10 @@
-Feature: Student Account Information
+Feature: Student Personal Profile
 	
 	As a student
 	I want to be able to navigate my account information
 	So that I can see my personal information
 	
-Scenario: Student navigates account information
+Scenario: Student sees summary of his/her profile in crs
 	Given I am on the "Account Information"
 	Then I should be able to see "Student Number: 201801234"
 	And I should be able to see "Name: TAMAD, JUAN"
