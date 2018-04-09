@@ -202,10 +202,41 @@
               <div class="card-header">
                 <i class="glyphicon glyphicon-time"></i> Current Semester Schedule
               </div>
-            <div class="card-body">
-              <canvas id="mySchedule" width="100%" height="100"></canvas>
+             <div class="card-body">
+                <div class="table-responsive">
+                  <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                      <tr>
+                        <th>Number</th>
+                        <th>Subject</th>
+                        <th>Section</th>
+                        <th>Units</th>
+                        <th>Schedule</th>
+                      </tr>
+                    </thead>
+                    <tfoot>
+                      <tr>
+                        <th>Number</th>
+                        <th>Subject</th>
+                        <th>Section</th>
+                        <th>Units</th>
+                        <th>Schedule</th>
+                      </tr>
+                    </tfoot>
+                    <tbody>
+                      <% @schedule.each_with_index do |content, i|%>
+                        <tr>
+                          <td><%=i+1%></td>
+                          <td><%=content[:subj]%></td>
+                          <td><%=content[:section]%></td>
+                          <td><%=content[:units]%></td>
+                          <td><%=content[:schedule]%></td>
+                         </tr>
+                      <%end%>
+                    </tbody>
+                  </table>
+                </div>
             </div>
-           </div>
          </div>
       </div>
       
