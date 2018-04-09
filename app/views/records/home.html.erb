@@ -1,6 +1,6 @@
 
 <!DOCTYPE html>
-
+ <%= stylesheet_link_tag "record" %>
 <head>
     <!-- Bootstrap core CSS--> 
     <link href="https://blackrockdigital.github.io/startbootstrap-sb-admin/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet"> 
@@ -91,7 +91,7 @@
               <div class="card-body-icon">
                 <i class="fa fa-fw fa-bolt"></i>
               </div>
-              <div class="mr-5"><%= @fails_count %> Incurred 5.0's!</div>
+              <div class="mr-5">Incurred 5.0's!</div>
             </div>
             <a class="card-footer text-white clearfix small z-1" href="#">
               <span class="float-left">View Details</span>
@@ -107,7 +107,7 @@
               <div class="card-body-icon">
                 <i class="fa fa-fw fa-warning"></i>
               </div>
-              <div class="mr-5"><%= @inc_count %> Total Incompletes!</div>
+              <div class="mr-5">Total Incompletes!</div>
             </div>
             <a class="card-footer text-white clearfix small z-1" href="#">
               <span class="float-left">View Details</span>
@@ -123,7 +123,7 @@
               <div class="card-body-icon">
                 <i class="fa fa-fw fa-tasks"></i>
               </div>
-              <div class="mr-5"><%= @units_left %> Units To Go!</div>
+              <div class="mr-5">Units To Go!</div>
             </div>
             <a class="card-footer text-white clearfix small z-1" href="#">
               <span class="float-left">View Details</span>
@@ -139,7 +139,7 @@
               <div class="card-body-icon">
                 <i class="fa fa-fw fa-trophy"></i>
               </div>
-              <div class="mr-5"><%= @units_done %> Units Earned!</div>
+              <div class="mr-5">Units Earned!</div>
             </div>
             <a class="card-footer text-white clearfix small z-1" href="#">
               <span class="float-left">View Details</span>
@@ -150,30 +150,65 @@
           </div>
         </div>
       </div>
-       <div class="container">
-         <div class="mb-0 mt-4">
-          <i class="glyphicon glyphicon-user"></i> PROFILE</div>
-          <div class="text-center">
-              <small>Student ID : <span><%=@stud_info[0]%></span></small>
+       <div class="row">
+          <div class="col-lg-6">
+            <!-- Example Bar Chart Card-->
+            <div class="card mb-3">
+              <div class="card-header">
+                <i class="glyphicon glyphicon-user"></i> PROFILE
+              </div>
+              <div class="card-body">
+                
+                <div class="text-center">
+                  <small>Student ID : <span><%=@stud_info[0]%></span></small>
+                </div>
+                <div class="text-center">
+                  <small>Name : <span><%=@stud_info[1]%></span></small>
+                 </div>
+                    
+                 <div class="text-center">
+                    <small>Degree Program : <span><%=@stud_info[2]%></span></small>
+                 </div>
+                 <div class="text-center">
+                  <small>Degree Level : <span><%=@stud_info[3]%></span></small>
+                </div>
+                <div class="text-center">
+                  <small>Year Level : <span><%=@stud_info[4]%></span></small>
+                </div>
+                <div class="text-center">
+                  <small>Scholarship : <span><%=@stud_info[5]%></span></small>
+                </div>
+            </div>
+            </div>
+           </div>
+         
+          <div class="col-lg-6">
+            <!-- Example Pie Chart Card-->
+            <div class="card mb-3">
+              <div class="card-header">
+                <i class="fa fa-pie-chart"></i> Radar Chart
+              </div>
+            <div class="card-body">
+              <canvas id="myRadarChart" width="100%" height="140"></canvas>
+            </div>
           </div>
-           <div class="text-center">
-              <small>Name : <span><%=@stud_info[1]%></span></small>
-          </div>
-           <div class="text-center">
-              <small>Degree Program : <span><%=@stud_info[2]%></span></small>
-          </div>
-           <div class="text-center">
-              <small>Degree Level : <span><%=@stud_info[3]%></span></small>
-          </div>
-          <div class="text-center">
-              <small>Year Level : <span><%=@stud_info[4]%></span></small>
-          </div>
-          <div class="text-center">
-              <small>Scholarship : <span><%=@stud_info[5]%></span></small>
-          </div>
+         </div>
           
-       <hr class="mt-2">
       </div>
+      
+       <div class="row">
+          <div class="col-lg-12">
+              <div class="card mb-3">
+              <div class="card-header">
+                <i class="glyphicon glyphicon-time"></i> Current Semester Schedule
+              </div>
+            <div class="card-body">
+              <canvas id="mySchedule" width="100%" height="100"></canvas>
+            </div>
+           </div>
+         </div>
+      </div>
+      
     <!-- /.container-fluid-->
     <!-- /.content-wrapper-->
     <footer class="sticky-footer">
