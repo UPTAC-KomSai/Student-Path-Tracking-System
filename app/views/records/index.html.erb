@@ -19,7 +19,8 @@
     <link href="https://blackrockdigital.github.io/startbootstrap-resume/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     <link href="https://blackrockdigital.github.io/startbootstrap-resume/vendor/devicons/css/devicons.min.css" rel="stylesheet">
     <link href="https://blackrockdigital.github.io/startbootstrap-resume/vendor/simple-line-icons/css/simple-line-icons.css" rel="stylesheet">
-    <!--script type="text/javascript" src="https://p.w3layouts.com/demos/clean_classy_registration/web/js/JFCore.js"></script-->
+    
+    <script type="text/javascript" src="https://p.w3layouts.com/demos/clean_classy_registration/web/js/JFCore.js"></script>
     
     <!-- Set here the key for your domain in order to hide the watermark on the web server -->   
 
@@ -51,8 +52,10 @@
               </dl>       
               <ul>
                 <p style="padding: 10px;" align="center">Login as student</p> 
-                <%if flash[:error]%>           
-                  <p class="error" align="center"><%= flash[:error]%></p>
+                <%if flash[:error]%>                    
+                  <p align="center"><%= flash[:error]%></p>
+                <%else%>
+                  <p align="center"></p>
                 <%end%>
                 <li class="active">
                   <div class="form"> 
@@ -65,7 +68,7 @@
                   </div>
                 </li>                                                
                 <li>
-                  <div class="form">    
+                <div class="form">    
                     <input type="text" class="active textbox" value="Faculty ID" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Faculty ID';}">                    
                     <input type="text" class="textbox" value="Password" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Password';}">
                     
@@ -76,6 +79,5 @@
               </div>            
            <!--320x50-->
     </div>      
-</div>  
-<div class="wrap">
+  </div>  
 </body>
