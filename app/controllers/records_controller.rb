@@ -3,7 +3,14 @@ class RecordsController < ApplicationController
   @stud_info
   @@id 
   @@pw 
+
   def index 
+  end
+
+  def student_login    
+  end
+
+  def faculty_login
   end
 
   def home
@@ -42,7 +49,7 @@ class RecordsController < ApplicationController
         
         
         if(login.uri.to_s.include?("errorMsg"))
-          flash[:error] = "Your credentials do not match our records!"
+          @login[:error] = "Your credentials do not match our records!"
           redirect_to "/"
         end
   end

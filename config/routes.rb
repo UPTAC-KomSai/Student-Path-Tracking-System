@@ -4,6 +4,9 @@ Rails.application.routes.draw do
   root 'records#index'
   resources :records
   
+  get '/student_login' => 'records#student_login'
+  get '/faculty_login' => 'records#faculty_login'
+
   post '/dashboard' => 'records#home'
   get '/dashboard' => 'records#home'
   
