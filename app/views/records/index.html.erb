@@ -8,66 +8,39 @@
           <%= image_tag('logo/logo-up.png', :alt => 'UP', :class => 'logo-up') %>
         </div>
         <div class='card-body'>
+          <% if flash[:error] %>
+            <p class='text-center open-sans-font'><small><%= flash[:error] %></small></p>
+          <% end %>
           <ul class='nav nav-tabs nav-fill'>
             <li class='nav-item'>
               <a class='nav-link active' data-toggle='tab' href='#student_login'>
-                <i class='fa fa-graduation-cap'></i>
+                <i class='fa fa-user'></i>
               </a>
             </li>
             <li class='nav-item'>
               <a class='nav-link' data-toggle='tab' href='#faculty_login'>
-                <i class='glyphicon glyphicon-user'></i>
+                <i class='fa fa-user-secret'></i>
               </a>
             </li>
           </ul>
           <br/>
           <div class='tab-content'>
-            <div class='tab-pane active container-fluid' style="min-width: 180px;" id='student_login'>
-              <form action="/dashboard" method="post">  
-                <div class="form-group has-feedback">              
-                  <input type="text" class="form-control" name="student_number" placeholder="Student ID" value="">
-                </div>
-                <div class="form-group has-feedback">              
-                  <input type="password" class="form-control" name="password" placeholder="Password" value="">
-                </div>            
-                <div class="row">
-                    <div class="col-xs-8">
-                      <div class="checkbox icheck">
-                        <label>
-                          <input type="checkbox" name="remember"> Remember Me
-                          </label>
-                      </div>
-                    </div>                      
-                </div>
-                <div class="row" style="text-align: center;">                  
-                    <button type="submit"
-                    class="btn btn-primary btn-block btn-flat">Sign In</button>                  
-                </div>
-            </form>          
-          </div>
-          <div class='tab-pane container-fluid' id='faculty_login'>
-              <form action="/dashboard" method="post">  
-                <div class="form-group has-feedback">              
-                  <input type="text" class="form-control" name="faculty_id" placeholder="Faculty ID" value="">
-                </div>
-                <div class="form-group has-feedback">              
-                  <input type="password" class="form-control" name="password" placeholder="Password" value="">
-                </div>            
-                <div class="row">
-                    <div class="col-xs-8">
-                      <div class="checkbox icheck">
-                        <label>
-                          <input type="checkbox" name="remember"> Remember Me
-                          </label>
-                      </div>
-                    </div>                      
-                </div>
-                <div class="row" style="text-align: center;">                  
-                    <button type="submit"
-                    class="btn btn-primary btn-block btn-flat">Sign In</button>                  
-                </div>
-            </form>     
-          </div>
+            <div class='tab-pane active container-fluid' id='student_login'>
+              <%= form_for :record, url: dashboard_path, local: true do |f| %>
+                <%= f.text_field :user, class: 'form-control open-sans-font', autocomplete: 'off', placeholder: 'Student Number' %>
+                <%= f.password_field :password, class: 'form-control open-sans-font', autocomplete: 'off', placeholder: 'Password' %>
+                <br/>
+                <%= f.submit "Login", class: 'btn btn-outline-primary btn-block open-sans-font' %>
+              <% end %>
+            </div>
+            <div class='tab-pane container-fluid' id='faculty_login'>
+              <%= form_for :record, url: dashboard_path, local: true do |f| %>
+                <%= f.text_field :user, class: 'form-control open-sans-font', autocomplete: 'off', placeholder: 'Username' %>
+                <%= f.password_field :password, class: 'form-control open-sans-font', autocomplete: 'off', placeholder: 'Password' %>
+                <br/>
+                <%= f.submit "Login", class: 'btn btn-outline-primary btn-block open-sans-font' %>
+              <% end %>
+            </div>
           </div>
         </div>
       </div>
