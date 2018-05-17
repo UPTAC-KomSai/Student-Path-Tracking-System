@@ -1,21 +1,4 @@
 class RecordsController < ApplicationController
-<<<<<<< HEAD
-  def index   
-  end
-
-  def home
-  	a = Mechanize.new
-  	a.get('http://crs.upv.edu.ph/') do |page|
-  		# Click the Student link
-  		login_page = a.click(page.link_with(:text => /Student/))
-  		
-  		# Submit the login form
-  		login_form = login_page.form('StudentLogin')
-  		login_form.studentIDNumber = params[:student_number]  			
-  		login_form.password = params[:password]  		  		
-  		pp login_form  		
-  	end
-=======
 
   @stud_info
   @schedule
@@ -96,7 +79,6 @@ class RecordsController < ApplicationController
           flash[:error] = "Your credentials do not match our records!"
           redirect_to "/"
         end
->>>>>>> e92d5976e34f4f36ef8924d640c82efdcfcad1a5
   end
   
   def personalProfile

@@ -1,27 +1,14 @@
 Rails.application.routes.draw do
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+  get 'spts/index'
+  get 'spts/about', :to => 'spts#about'
+  get 'spts/developers_portal', :to => 'spts#developers_portal'
+  post 'spts/student_login', :to => 'spts#student_login'
+  post 'spts/faculty_login', :to => 'spts#faculty_login'
+  delete 'spts/logout', :to => 'spts#logout'
+  root 'spts#index'
 
-  root 'records#index'
-  resources :records
-  
-  post '/dashboard' => 'records#home'
-  get '/dashboard' => 'records#home'
-  
-  post '/personalProfile' => 'records#personalProfile'
-  get '/personalProfile' => 'records#personalProfile'
-  
-  post '/charts' => 'records#charts'
-  get '/charts' => 'records#charts'
-  
-  post '/grades' => 'records#grades'
-  get '/grades' => 'records#grades'
-  
-  post '/grades/incurred5' => 'records#incurred5'
-  get '/grades/incurred5' => 'records#incurred5'
-  
-  post '/schedule' => 'records#schedule'
-  get '/schedule' => 'records#schedule'
-  
-  post '/studyplan' => 'records#studyplan'
-  get '/studyplan' => 'records#studyplan'
+  get 'student/dashboard', :to => 'students#dashboard'
+  get 'student/charts', :to => 'students#charts'
+  get 'student/grades', :to => 'students#grades'
+  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end

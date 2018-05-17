@@ -1,0 +1,247 @@
+<body class="fixed-nav sticky-footer bg-dark" id="page-top">
+  <!-- Navigation-->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
+    <a class="navbar-brand" href="/dashboard">Study Path Tracking System</a>
+    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
+          <a class="nav-link" href="/student/dashboard">
+            <i class="fa fa-fw fa-dashboard"></i>
+            <span class="nav-link-text">Dashboard</span>
+          </a>
+        </li>
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Charts">
+         <a class="nav-link" href="/student/charts">
+            <i class="fa fa-fw fa-area-chart"></i>
+            <span class="nav-link-text">Charts</span>
+          </a>
+        </li>
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Grades">
+         <a class="nav-link" href="/student/grades">
+            <i class="fa fa-fw fa-list"></i>
+            <span class="nav-link-text">Grades</span>
+          </a>
+        </li>
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Study Plan">
+          <%= link_to '/', class: 'nav-link' do %>
+            <i class="fa fa-fw fa-graduation-cap"></i>
+            <span class="nav-link-text">Study Path</span>
+          <% end %>
+        </li>
+      </ul>
+      <ul class="navbar-nav sidenav-toggler">
+        <li class="nav-item">
+          <a class="nav-link text-center" id="sidenavToggler">
+            <i class="fa fa-fw fa-chevron-circle-left"></i>
+          </a>
+        </li>
+      </ul>
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="modal" data-target="#exampleModal">
+            <i class="fa fa-fw fa-sign-out"></i>Logout</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+  <div class="content-wrapper">
+    <div class="container-fluid">
+      <!-- Breadcrumbs-->
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item active">Student</li>
+        <li class="breadcrumb-item">
+          <a href="">Dashboard</a>
+        </li>
+      </ol>
+      <!-- Icon Cards-->
+      <div class="row">
+      <div class="col-xl-3 col-sm-12 mb-3">
+          <div class="card text-white bg-danger o-hidden h-100">
+            <div class="card-body">
+              <div class="card-body-icon">
+                <i class="fa fa-fw fa-bolt"></i>
+              </div>
+              <div class="mr-5">Incurred 5.0's!</div>
+            </div>
+            <a class="card-footer text-white clearfix small z-1" href="#">
+              <span class="float-left">View Details</span>
+              <span class="float-right">
+                <i class="fa fa-angle-right"></i>
+              </span>
+            </a>
+          </div>
+        </div>
+        <div class="col-xl-3 col-sm-6 mb-3">
+          <div class="card text-white bg-warning o-hidden h-100">
+            <div class="card-body">
+              <div class="card-body-icon">
+                <i class="fa fa-fw fa-warning"></i>
+              </div>
+              <div class="mr-5">Total Incompletes!</div>
+            </div>
+            <a class="card-footer text-white clearfix small z-1" href="#">
+              <span class="float-left">View Details</span>
+              <span class="float-right">
+                <i class="fa fa-angle-right"></i>
+              </span>
+            </a>
+          </div>
+        </div>
+        <div class="col-xl-3 col-sm-6 mb-3">
+          <div class="card text-white bg-primary o-hidden h-100">
+            <div class="card-body">
+              <div class="card-body-icon">
+                <i class="fa fa-fw fa-tasks"></i>
+              </div>
+              <div class="mr-5">Units To Go!</div>
+            </div>
+            <a class="card-footer text-white clearfix small z-1" href="#">
+              <span class="float-left">View Details</span>
+              <span class="float-right">
+                <i class="fa fa-angle-right"></i>
+              </span>
+            </a>
+          </div>
+        </div>
+        <div class="col-xl-3 col-sm-6 mb-3">
+          <div class="card text-white bg-success o-hidden h-100">
+            <div class="card-body">
+              <div class="card-body-icon">
+                <i class="fa fa-fw fa-trophy"></i>
+              </div>
+              <div class="mr-5">Units Earned!</div>
+            </div>
+            <a class="card-footer text-white clearfix small z-1" href="#">
+              <span class="float-left">View Details</span>
+              <span class="float-right">
+                <i class="fa fa-angle-right"></i>
+              </span>
+            </a>
+          </div>
+        </div>
+      </div>
+<<<<<<< HEAD
+=======
+       <div class="row">
+          <div class="col-lg-6">
+            <!-- Example Bar Chart Card-->
+            <div class="card mb-3">
+              <div class="card-header">
+                <i class="fa fa-fw fa-user"></i> Profile
+              </div>
+              <div class="card-body">
+
+                <div class="text-left">
+                  <strong>Student ID : </strong><span><%= @basic_info['student_number'] %></span>
+                </div>
+                <div class="text-left">
+                  <strong>Name : </strong><span><%= @basic_info['name'] %></span>
+                 </div>
+
+                 <div class="text-left">
+                    <strong>Degree Program : </strong><span><%= @basic_info['degree_program'] %></span>
+                 </div>
+                 <div class="text-left">
+                  <strong>Degree Level : </strong><span><%= @basic_info['degree_level'] %></span>
+                </div>
+                <div class="text-left">
+                  <strong>Year Level : </strong><span><%= @basic_info['year_level'] %></span>
+                </div>
+                <div class="text-left">
+                  <strong>Scholarship : </strong><span><%= @basic_info['scholarship'] %></span>
+                </div>
+            </div>
+            </div>
+           </div>
+
+          <div class="col-lg-6">
+            <!-- Example Pie Chart Card-->
+            <div class="card mb-3">
+              <div class="card-header">
+                <i class="fa fa-pie-chart"></i> Radar Chart
+              </div>
+            <div class="card-body">
+              <canvas id="myRadarChart" width="100%" height="140"></canvas>
+            </div>
+          </div>
+         </div>
+
+      </div>
+
+       <div class="row">
+          <div class="col-lg-12">
+              <div class="card mb-3">
+              <div class="card-header">
+                <i class="fa fa-fw fa-calendar"></i> Current Semester Schedule
+              </div>
+             <div class="card-body">
+                <div class="table-responsive">
+                  <table class="table table-bordered" width="100%" cellspacing="0">
+                    <thead class="thead-light">
+                      <tr>
+                        <th>Number</th>
+                        <th>Subject</th>
+                        <th>Section</th>
+                        <th>Units</th>
+                        <th>Schedule</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <% @current_schedule.each do |id, content| %>
+                        <tr>
+                          <td><%= id %></td>
+                          <td><%= content[0] %></td>
+                          <td><%= content[1] %></td>
+                          <td><%= content[2] %></td>
+                          <td><%= content[3] + ' ' + content[4] %></td>
+                         </tr>
+                      <% end %>
+                    </tbody>
+                  </table>
+                </div>
+            </div>
+         </div>
+      </div>
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+      <i class="fa fa-angle-up"></i>
+    </a>
+    <!-- Logout Modal-->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+          <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+          <div class="modal-footer">
+            <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+            <%= link_to "Logout", spts_logout_path, class: 'btn btn-primary', role: 'button', method: "delete" %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="/assets/vendor/jquery/jquery.min.js"></script>
+    <script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- Core plugin JavaScript-->
+    <script src="/assets/vendor/jquery-easing/jquery.easing.min.js"></script>
+    <!-- Page level plugin JavaScript-->
+    <script src="/assets/vendor/chart.js/Chart.min.js"></script>
+    <script src="/assets/vendor/datatables/jquery.dataTables.js"></script>
+    <script src="/assets/vendor/datatables/dataTables.bootstrap4.js"></script>
+    <!-- Custom scripts for all pages-->
+    <script src="/assets/js/sb-admin.min.js"></script>
+    <!-- Custom scripts for this page-->
+    <script src="/assets/js/sb-admin-datatables.min.js"></script>
+    <script src="/assets/js/sb-admin-charts.min.js"></script>
+  </div>
+</body>

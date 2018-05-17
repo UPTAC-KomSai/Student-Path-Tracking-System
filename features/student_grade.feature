@@ -5,6 +5,10 @@ Feature: Student Grade navigation
 	So that I can see the summary of my grades
 	
 Scenario: Student navigates grades
+  Given I login as "student"
+	And I fill in "student_number" with "201510778"
+	And I fill in "Password" with "201510778"
+	And I click "Login"
+	Then I should see my dashboard
 	Given I am on the grades
 	Then I should be able to see a table of my grades
-	And I should be able to see toggle button "Choose sem"
