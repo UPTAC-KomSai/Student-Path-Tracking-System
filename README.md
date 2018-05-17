@@ -1,24 +1,19 @@
-# README
+# Study Path Tracking System
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+##### _Your future is yours to follow_
 
-Things you may want to cover:
+**Study Path Tracking System** (SPTS) is an online study plan tracking tool available for every student to use.
 
-* Ruby version
+## PENC Development Team
 
-* System dependencies
+**Project Manager :**
 
-* Configuration
+* Marie Edcel Balite
 
-* Database creation
+**Members         :**
 
-* Database initialization
+1. Cylwyn Ronald Creer
 
-* How to run the test suite
+2. Nikka Marie de Jesus
 
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+3. Patricia Nicole Opetina
