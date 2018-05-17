@@ -1,0 +1,57 @@
+<head>  
+
+    <%= stylesheet_link_tag "index" %>
+
+    <title>SPTS</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">    
+    
+</head>
+
+<body style="background-color: #bd5d38;"> 
+  <div class="tab style-1" style="width: 340px; margin: auto; margin-top: 200px;">
+      <dl>
+        <dd style="width:175px;">
+          <a class="glyphicon glyphicon-education" style="text-align: center; font-size: 25px;" href="/student_login"></a>
+        </dd>
+        <dd style="width:164px;">
+          <a class="active glyphicon glyphicon-user" style="text-align: center; font-size: 17px;" href="/faculty_login"></a>
+        </dd>
+      </dl>     
+      <ul>        
+        <p style="padding: 10px;" align="center">Login as Faculty</p> 
+        <%if flash[:error]%>                    
+          <p align="center"><%= flash[:error]%></p>
+        <%else%>
+          <p align="center"></p>
+        <%end%>
+        <li class="active">
+        <form action="/dashboard" method="post">  
+          <div class="form-group has-feedback">              
+            <input type="text" class="form-control" name="student_number" placeholder="Faculty ID" value="">
+            <span class="glyphicon glyphicon-user form-control-feedback"></span>
+          </div>
+          <div class="form-group has-feedback">              
+            <input type="password" class="form-control" name="password" placeholder="Password" value="">
+            <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+          </div>            
+          <div class="row">
+              <div class="col-xs-8">
+                <div class="checkbox icheck">
+                  <label>
+                    <input type="checkbox" name="remember"> Remember Me
+                    </label>
+                </div>
+              </div>
+                <!-- /.col -->
+                <div class="col-xs-4">
+                  <button type="submit"
+                      class="btn btn-primary btn-block btn-flat">Sign In</button>
+                  </div>
+                <!-- /.col -->
+          </div>
+          </form>                                                           
+        </li>                                           
+      </ul>              
+  </div>              
+</body>
