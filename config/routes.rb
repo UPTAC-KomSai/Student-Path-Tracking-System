@@ -1,6 +1,4 @@
 Rails.application.routes.draw do
-  get 'students/dashboard'
-
   get 'spts/index'
   get 'spts/about', :to => 'spts#about'
   get 'spts/developers_portal', :to => 'spts#developers_portal'

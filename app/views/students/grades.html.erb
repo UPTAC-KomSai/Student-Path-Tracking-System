@@ -28,7 +28,7 @@
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Study Plan">
           <%= link_to '/', class: 'nav-link' do %>
             <i class="fa fa-fw fa-graduation-cap"></i>
-            <span class="nav-link-text">Study Plan</span>
+            <span class="nav-link-text">Study Path</span>
           <% end %>
         </li>
       </ul>
@@ -92,7 +92,11 @@
                 </div>
             </div>
             <div class="card-header">
-              <i class="fa fa-fw fa-shopping-cart"></i><%= content[(content.length - 1)][:subj] %>
+              <i class="fa fa-fw fa-database"></i><%= content[(content.length - 1)][:subj] %>
+              <br>
+              <i class="fa fa-fw fa-heartbeat"></i><%= content[(content.length - 1)][:units] %>
+              <br>
+              <i class="fa fa-fw fa-bar-chart"></i><%= content[(content.length - 1)][:finalGrade] %>
             </div>
          </div>
       </div>
