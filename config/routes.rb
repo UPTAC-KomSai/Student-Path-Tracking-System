@@ -10,5 +10,7 @@ Rails.application.routes.draw do
   get 'student/dashboard', :to => 'students#dashboard'
   get 'student/charts', :to => 'students#charts'
   get 'student/grades', :to => 'students#grades'
+
+  resources :study_paths
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end

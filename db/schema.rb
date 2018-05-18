@@ -10,10 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180517053142) do
+ActiveRecord::Schema.define(version: 20180517150327) do
 
   create_table "degrees", force: :cascade do |t|
+    t.integer "division_id"
     t.string "code"
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["division_id"], name: "index_degrees_on_division_id"
+  end
+
+  create_table "divisions", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -23,7 +31,7 @@ ActiveRecord::Schema.define(version: 20180517053142) do
     t.integer "degree_id"
     t.integer "subject_id"
     t.boolean "isMajor"
-    t.boolean "isGE"
+    t.boolean "isGe"
     t.boolean "isRequired"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -32,6 +40,17 @@ ActiveRecord::Schema.define(version: 20180517053142) do
   end
 
   create_table "subjects", force: :cascade do |t|
+    t.integer "division_id"
+    t.integer "subjects_id"
+    t.string "subject_id"
+    t.string "name"
+    t.string "description"
+    t.integer "units"
+    t.boolean "isGe"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["division_id"], name: "index_subjects_on_division_id"
+    t.index ["subjects_id"], name: "index_subjects_on_subjects_id"
   end
 
 end

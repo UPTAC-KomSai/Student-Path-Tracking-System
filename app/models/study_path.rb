@@ -1,0 +1,2 @@
+class StudyPath < ApplicationRecord
+end

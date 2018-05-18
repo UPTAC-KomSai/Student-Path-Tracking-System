@@ -26,11 +26,4 @@ class StudentsController < ApplicationController
       end
     end
   end
-
-  private
-    def access_crs
-      @student = Student.new session[:user]['id'], session[:user]['password']
-      @student.login
-      @basic_info = @student.basic_info
-    end
 end
