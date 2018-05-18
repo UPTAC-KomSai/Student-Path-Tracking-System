@@ -52,11 +52,11 @@ course_id_list = []
 prereq_list = Hash.new
 
 while i < num do
-  if temp[i] =~ /^ (\d+). /
+  if temp[i] =~ /^ (\d+)\. /
   	course_id = temp[i + 1]
   	#puts "[#{course_id}]"
   	course_id = course_id.strip
-  	#puts "   [#{course_id}]"
+  	print "   [#{course_id}]"
   	course_name = temp[i + 3]
   elsif temp[i] =~ /^ Description: /
   	course_desc = temp[i + 1]
@@ -85,7 +85,7 @@ while i < num do
   	end
   end
 
-  if temp[i + 1] =~ /^ (\d+). /
+  if temp[i + 1] =~ /^ (\d+)\. /
   	#puts course_div
 
   	if course_div != nil
@@ -94,46 +94,112 @@ while i < num do
   	  end
 
   	  division_id = ""
-  	  division = Division.where(name: course_div).first
+  	  division =  Division.where(name: course_div).first
   	  if division != nil
   	    division_id = division.id
+  	    print division.name
+  	  else
+  	  	print "nil"
   	  end
 
   	  if course_prereq != nil
   	  	course_id_list << course_id
   	  	prereq_list[course_id] = course_prereq
-  	  	#course_prereq_list = course_prereq.split(",")
-  	  	#course_prereq_list.each do |e| e.strip end
-
-  	  	#puts course_prereq_list.length
-  	  	#puts "   id = #{course_id}"
-  	    #course_prereq_list.each do |subject_id| 
-  	    #  subject_id = subject_id.strip
-  	    #  print "     [#{subject_id}]"
-  	    #  prereq = Subject.where(subject_id: subject_id).first
-  	    #  if prereq != nil
-  	    #  	puts " = not nil"
-  	    #  	prereq_id = prereq.id
-  	    #  	prereq_course_id = prereq.subject_id
-  	      	#puts "    === " + prereq_course_id
-  	      	#puts "div = #{division_id}, id = #{course_id}, name = #{course_name}, description = #{course_desc}, units = #{course_units}, prereqs = #{prereq_id}"
-  	    #    Subject.create(division_id: division_id, subject_id: course_id, name: course_name, description: course_desc, units: course_units, subjects_id: prereq_id)
-  	    #  else
-  	    #  	puts " = nil"
-  	    #  end
-  	    #end
+  	   # puts course_prereq
   	  else
   	  	prereq_list[course_id] = nil
-  	    #Subject.create(division_id: division_id, subject_id: course_id, name: course_name, description: course_desc, units: course_units)
+  	  	puts "nil"  	   
    	  end
+
+   	  #puts "ci = [#{course_id}]"
+   	  Subject.create(division_id: division_id, subject_id: course_id, name: course_name, description: course_desc, units: course_units)
    end
+  else
+  	if i == num - 1
+  	  if course_div != nil
+  	    if course_div.include?("\(")
+  	      course_div = course_div.chomp("\(")
+  	    end
+
+  	    division_id = ""
+  	    division =  Division.where(name: course_div).first
+  	    if division != nil
+  	      division_id = division.id
+  	      print division.name
+  	    else
+  	  	  print "nil"
+  	    end
+
+  	    if course_prereq != nil
+  	  	  course_id_list << course_id
+  	  	  prereq_list[course_id] = course_prereq
+  	     # puts course_prereq
+  	    else
+  	      prereq_list[course_id] = nil  	   
+  	      puts "nil"
+   	    end
+  	   end
+  	end
   end
   
   i+=1
 end
 
+#course_id_list.each do |e| puts "#{e} => #{prereq_list[e]}" end
 
-course_id_list.each do |e| puts e end
-#prereq_list.each do |e|
-#	puts 
-#end
+course_id_list.each do |cid| 
+	prereq = prereq_list[cid] 
+	course_prereq_list = prereq.split(",")
+	
+	#puts course_prereq_list.length
+	prereq_str = course_prereq_list[0]
+	prereq_str = prereq_str.strip
+	prereq_obj = Subject.where(subject_id: prereq_str).first
+
+	if prereq_obj != nil
+	 # puts "not nil"
+	  prereq_id = prereq_obj.id
+
+	  puts "[#{cid}] = [#{prereq_str}]"
+	  subject = Subject.where(subject_id: cid).first
+	  if subject != nil
+	     subject.subjects_id = prereq_id
+	 else
+	 	puts "    nil"
+	 end
+
+	end
+
+    if course_prereq_list.length > 1
+		subj_to_replicate = Subject.where(subject_id: cid).first
+		#puts "replicate #{subj_to_replicate.subject_id}" 
+		var = 1
+		while var < course_prereq_list.length do
+			prereq_str = course_prereq_list[var]
+			prereq_str = prereq_str.strip
+			#puts "  [#{prereq_str}]"
+			prereq_obj = Subject.where(subject_id: prereq_str).first
+
+			if prereq_obj != nil
+				#puts "not nil"
+				prereq_id = prereq_obj.id
+				#puts " === #{prereq_id}"
+			    Subject.create(division_id: subj_to_replicate.division_id, subject_id: subj_to_replicate.subject_id, 
+			 	name: subj_to_replicate.name, description: subj_to_replicate.description, units: subj_to_replicate.units, 
+				subjects_id: prereq_id)
+			end
+
+			var += 1
+		end
+    end
+end
+
+data = Subject.all
+puts data.length
+#puts "div = #{data.division_id}, id = #{data.subject_id}, name = #{data.name}, description = #{data.description}, units = #{data.units}, prereqs = #{data.subjects_id}"
+data.each do |e|
+  #puts e.subjects_id
+  prq = Subject.where(subjects_id: e.subjects_id).first
+  prq_id = prq.subject_id
+  #puts "div = #{e.division_id}, id = #{e.subject_id}, prereqs = #{prq_id}"
+end
