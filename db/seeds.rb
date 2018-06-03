@@ -108,7 +108,7 @@ while i < num do
   	   # puts course_prereq
   	  else
   	  	prereq_list[course_id] = nil
-  	  	puts "nil"  	   
+  	  	#puts "nil"  	   
    	  end
 
    	  #puts "ci = [#{course_id}]"
@@ -133,7 +133,7 @@ while i < num do
   	    if course_prereq != nil
   	  	  course_id_list << course_id
   	  	  prereq_list[course_id] = course_prereq
-  	     # puts course_prereq
+  	     puts course_prereq
   	    else
   	      prereq_list[course_id] = nil  	   
   	      puts "nil"
