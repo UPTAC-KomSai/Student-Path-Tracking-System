@@ -45,7 +45,6 @@ class StudyPathsController < ApplicationController
 					entry << subject
 				end
 			end
-
 			@entries << entry
 		end
 
