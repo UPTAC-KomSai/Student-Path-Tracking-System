@@ -15,7 +15,7 @@ class StudentsController < ApplicationController
   def grades
     @myGrades = @student.grades
     
-    if !params.nil?
+    if !params.nil? and params.has_key? "highlight"
       @myGrades.each do |content|
         content.each do |row|
           if row.has_key? :finalGrade or row.has_key? :completionGrade

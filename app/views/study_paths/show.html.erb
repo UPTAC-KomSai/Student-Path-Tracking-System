@@ -38,12 +38,6 @@
                 <div class="text-left">
                   <strong>Title : </strong><span><%= @my_study_path.title %></span>
                 </div>
-                <%= link_to edit_study_path_path(@study_path), class: 'btn btn-success btn-sm', role: 'button' do %>
-                  <i class="fa fa-fw fa-edit"></i> Edit
-                <% end %>
-                <%= link_to study_path_path(@study_path), data: {:confirm => 'Are you sure you want to delete this study plan? Deleting this means that no student can access it.'}, :method => :delete, class: 'btn btn-danger btn-sm', role: 'button' do %>
-                  <i class="fa fa-fw fa-trash"></i> Delete
-                <% end %>
               </div>
               <div class="card-body">
                 <div class="table-responsive">
@@ -57,27 +51,33 @@
                         <th>Grade</th>
                       </tr>
                     </thead>
-                    <tbody>
-                      <tr class="table-primary">
-                        <td colspan="5">
-                          <h6 class="d-inline">First Year - First Semester</h6>
-                          <div class="d-inline float-right">
-                            <%= link_to update_subjects_path(@study_path, "year" => "First", "semester" => "First"), class: 'btn btn-warning btn-sm', role: 'button' do %>
-                              <i class="fa fa-fw fa-plus-square"></i> Update Subjects
-                            <% end %>
-                          </div>                        
-                        </td>
-                      <tr>  
-                    </tbody>
-                    <tbody>
-                      <tr>
-                        <td colspan="5">No subjects so far.</td>
-                      </tr>
-                    </tbody>
+                    <% if !@entries.nil? %>
+                      <% @entries.each_with_index do |content, i| %>
+                        <tbody>
+                          <tr class="table-primary">
+                            <td colspan="5">
+                              <h6 class="d-inline"><%= content[0][:subj].tr!('()', '') %></h6>                      
+                            </td>
+                          <tr>  
+                        </tbody>
+                        <tbody>
+                          <% for i in 1..(content.length - 1) %>
+                            <tr>
+                              <td><%= content[i][:subject] %></td>
+                              <td><%= content[i][:name] %></td>
+                              <td><%= content[i][:units] %></td>
+                              <td><%= content[i][:prerequisites] %></td>
+                              <td><%= content[i][:grade] %></td>
+                            </tr>
+                          <% end %>
+                        </tbody>
+                      <% end %>
+                    <% end %>
                   </table>
                 </div>
               </div>
-              <div class="card-header">   
+              <div class="card-header">
+                <h6>Total Units Earned : <%= @totalUnits %></h6>  
               </div>
             </div>
           </div>

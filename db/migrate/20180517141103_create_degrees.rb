@@ -9,6 +9,7 @@ class CreateDegrees < ActiveRecord::Migration[5.1]
     	
     	t.string :code
     	t.string :name
+      t.integer :years
     	
       t.timestamps
     end

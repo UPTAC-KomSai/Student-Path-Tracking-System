@@ -72,13 +72,13 @@ end
 
 degrees.each_with_index do |degree, index| 
   if index == 0 or index == 1
-    Degree.create(division_id: (Division.find_by name: "MGT").id, code: degree_code[index], name: degree)
+    Degree.create(division_id: (Division.find_by name: "MGT").id, code: degree_code[index], name: degree, years: 4)
   elsif index == 2 or index == 3
-    Degree.create(division_id: (Division.find_by name: "NSMD").id, code: degree_code[index], name: degree)
+    Degree.create(division_id: (Division.find_by name: "NSMD").id, code: degree_code[index], name: degree, years: 4)
   elsif index == 4 or index == 5 or index == 6
-    Degree.create(division_id: (Division.find_by name: "SOCSCI").id, code: degree_code[index], name: degree)
+    Degree.create(division_id: (Division.find_by name: "SOCSCI").id, code: degree_code[index], name: degree, years: 4)
   elsif index == 7
-    Degree.create(division_id: (Division.find_by name: "HUM").id, code: degree_code[index], name: degree)
+    Degree.create(division_id: (Division.find_by name: "HUM").id, code: degree_code[index], name: degree, years: 4)
   end
 end
 
