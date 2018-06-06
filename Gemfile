@@ -7,7 +7,7 @@ end
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 5.1.6'
+gem 'rails', '~> 5.1.5'
 # Use Puma as the app server
 gem 'puma', '~> 3.7'
 # Use SCSS for stylesheets
@@ -31,6 +31,15 @@ gem 'jbuilder', '~> 2.5'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
+# Use bootstrap as the front-end component library
+gem 'bootstrap', '~> 4.0.0'
+gem 'autoprefixer-rails'
+# Use Font Awesome for scalable vector icons
+gem 'font-awesome-rails'
+# Use jquery as the javascript library
+gem 'jquery-rails'
+
+gem 'lazy_high_charts'
 # Use nokogiri to scrape data from crs.upv.edu.ph
 gem 'nokogiri'
 # Use mechanize to automate actions in crs.upv.edu.ph

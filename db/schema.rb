@@ -10,11 +10,35 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180517053142) do
+ActiveRecord::Schema.define(version: 20180606034615) do
 
   create_table "degrees", force: :cascade do |t|
+    t.integer "division_id"
     t.string "code"
     t.string "name"
+    t.integer "years"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["division_id"], name: "index_degrees_on_division_id"
+  end
+
+  create_table "divisions", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "fake_subjects", force: :cascade do |t|
+    t.string "subject_code"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "study_path_subjects", force: :cascade do |t|
+    t.integer "study_path_id"
+    t.integer "subject_id"
+    t.string "year"
+    t.string "semester"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -22,9 +46,8 @@ ActiveRecord::Schema.define(version: 20180517053142) do
   create_table "study_paths", force: :cascade do |t|
     t.integer "degree_id"
     t.integer "subject_id"
-    t.boolean "isMajor"
-    t.boolean "isGE"
-    t.boolean "isRequired"
+    t.string "program_revision_code"
+    t.string "title"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["degree_id"], name: "index_study_paths_on_degree_id"
@@ -32,6 +55,18 @@ ActiveRecord::Schema.define(version: 20180517053142) do
   end
 
   create_table "subjects", force: :cascade do |t|
+    t.integer "division_id"
+    t.integer "fake_subject_id"
+    t.string "subject_id"
+    t.string "name"
+    t.string "pre_req"
+    t.string "description"
+    t.integer "units"
+    t.boolean "isGe"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["division_id"], name: "index_subjects_on_division_id"
+    t.index ["fake_subject_id"], name: "index_subjects_on_fake_subject_id"
   end
 
 end
