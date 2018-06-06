@@ -1,65 +1,17 @@
 <body class="fixed-nav sticky-footer bg-dark" id="page-top">
-  <!-- Navigation-->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
-    <a class="navbar-brand" href="/dashboard">Study Path Tracking System</a>
-    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarResponsive">
-      <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
-        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
-          <a class="nav-link" href="/student/dashboard">
-            <i class="fa fa-fw fa-dashboard"></i>
-            <span class="nav-link-text">Dashboard</span>
-          </a>
-        </li>
-        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Charts">
-         <a class="nav-link" href="/student/charts">
-            <i class="fa fa-fw fa-area-chart"></i>
-            <span class="nav-link-text">Charts</span>
-          </a>
-        </li>
-        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Grades">
-         <a class="nav-link" href="/student/grades">
-            <i class="fa fa-fw fa-list"></i>
-            <span class="nav-link-text">Grades</span>
-          </a>
-        </li>
-        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Study Plan">
-          <%= link_to study_path_path(@study_path), class: 'nav-link' do %>
-            <i class="fa fa-fw fa-graduation-cap"></i>
-            <span class="nav-link-text">Study Path</span>
-          <% end %>
-        </li>
-      </ul>
-      <ul class="navbar-nav sidenav-toggler">
-        <li class="nav-item">
-          <a class="nav-link text-center" id="sidenavToggler">
-            <i class="fa fa-fw fa-chevron-circle-left"></i>
-          </a>
-        </li>
-      </ul>
-      <ul class="navbar-nav ml-auto">
-        <li class="nav-item">
-          <a class="nav-link" data-toggle="modal" data-target="#exampleModal">
-            <i class="fa fa-fw fa-sign-out"></i>Logout</a>
-        </li>
-      </ul>
-    </div>
-  </nav>
+  <%= render partial: "shared/navigation", object: @study_path %>
   <div class="content-wrapper">
     <div class="container-fluid">
       <!-- Breadcrumbs-->
       <ol class="breadcrumb">
-        <li class="breadcrumb-item active">Student</li>
         <li class="breadcrumb-item">
-          <a href="">Study Path</a>
+          <a href="/student/dashboard">Student</a>
         </li>
+        <li class="breadcrumb-item active">Study Path</li>
       </ol>
 
       <% if @my_study_path.nil? %>
-        <br><br><br>
-        <div class="text-center">
+        <div class="text-center center-middle-text">
           <div class="col-12">
             <i class="fa fa-fw fa-frown-o fa-4x"></i>
             <br>
@@ -75,18 +27,23 @@
             <div class="card mb-3">
               <div class="card-header">
                 <div class="text-left">
-                  <strong>Program Code : </strong><span>426002</span>
+                  <strong>Program Code : </strong><span><%= @my_study_path.degree_id %></span>
                 </div>
                 <div class="text-left">
-                  <strong>Program Revision Code : </strong><span>426002003</span>
-                 </div>
-
-                 <div class="text-left">
-                    <strong>Name : </strong><span><%= @basic_info['degree_program'] %></span>
-                 </div>
-                 <div class="text-left">
-                  <strong>Title : </strong><span>Bachelor of Science in Computer Science</span>
+                  <strong>Program Revision Code : </strong><span><%= @my_study_path.program_revision_code %></span>
                 </div>
+                <div class="text-left">
+                  <strong>Name : </strong><span><%= @basic_info['degree_program'] %></span>
+                </div>
+                <div class="text-left">
+                  <strong>Title : </strong><span><%= @my_study_path.title %></span>
+                </div>
+                <%= link_to edit_study_path_path(@study_path), class: 'btn btn-success btn-sm', role: 'button' do %>
+                  <i class="fa fa-fw fa-edit"></i> Edit
+                <% end %>
+                <%= link_to study_path_path(@study_path), data: {:confirm => 'Are you sure you want to delete this study plan? Deleting this means that no student can access it.'}, :method => :delete, class: 'btn btn-danger btn-sm', role: 'button' do %>
+                  <i class="fa fa-fw fa-trash"></i> Delete
+                <% end %>
               </div>
               <div class="card-body">
                 <div class="table-responsive">
@@ -101,62 +58,33 @@
                       </tr>
                     </thead>
                     <tbody>
-                      
+                      <tr class="table-primary">
+                        <td colspan="5">
+                          <h6 class="d-inline">First Year - First Semester</h6>
+                          <div class="d-inline float-right">
+                            <%= link_to update_subjects_path(@study_path, "year" => "First", "semester" => "First"), class: 'btn btn-warning btn-sm', role: 'button' do %>
+                              <i class="fa fa-fw fa-plus-square"></i> Update Subjects
+                            <% end %>
+                          </div>                        
+                        </td>
+                      <tr>  
+                    </tbody>
+                    <tbody>
+                      <tr>
+                        <td colspan="5">No subjects so far.</td>
+                      </tr>
                     </tbody>
                   </table>
                 </div>
               </div>
-              <div class="card-header">
-                
+              <div class="card-header">   
               </div>
             </div>
           </div>
         </div>
       <% end %>
-      
-    <footer class="sticky-footer">
-      <div class="container">
-        <div class="text-center">
-          <small>Copyright © Study Path Tracking System 2018</small>
-        </div>
-      </div>
-    </footer>
-    <!-- Scroll to Top Button-->
-    <a class="scroll-to-top rounded" href="#page-top">
-      <i class="fa fa-angle-up"></i>
-    </a>
-    <!-- Logout Modal-->
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">×</span>
-            </button>
-          </div>
-          <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-          <div class="modal-footer">
-            <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-            <%= link_to "Logout", spts_logout_path, class: 'btn btn-primary', role: 'button', method: "delete" %>
-          </div>
-        </div>
-      </div>
+      <%= render "shared/logout_modal" %>
     </div>
-
-    <!-- Bootstrap core JavaScript-->
-    <script src="/assets/vendor/jquery/jquery.min.js"></script>
-    <script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <!-- Core plugin JavaScript-->
-    <script src="/assets/vendor/jquery-easing/jquery.easing.min.js"></script>
-    <!-- Page level plugin JavaScript-->
-    <script src="/assets/vendor/chart.js/Chart.min.js"></script>
-    <script src="/assets/vendor/datatables/jquery.dataTables.js"></script>
-    <script src="/assets/vendor/datatables/dataTables.bootstrap4.js"></script>
-    <!-- Custom scripts for all pages-->
-    <script src="/assets/js/sb-admin.min.js"></script>
-    <!-- Custom scripts for this page-->
-    <script src="/assets/js/sb-admin-datatables.min.js"></script>
-    <script src="/assets/js/sb-admin-charts.min.js"></script>
+    <%= render "shared/footer" %>
   </div>
 </body>

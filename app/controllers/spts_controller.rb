@@ -14,6 +14,14 @@ class SptsController < ApplicationController
     @title = 'SPTS'
   end
 
+  def about
+    @title = 'SPTS - About'
+  end
+
+  def developers_portal
+    @title = 'SPTS - Developers Portal'
+  end
+
   def student_login
     @student = Student.new params[:spts][:user], params[:spts][:password]
 

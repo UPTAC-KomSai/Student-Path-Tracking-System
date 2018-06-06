@@ -8,9 +8,8 @@ class CreateStudyPaths < ActiveRecord::Migration[5.1]
     	t.references :degree, foreign_key: true
     	t.references :subject, foreign_key: true
 
-    	t.boolean :isMajor
-    	t.boolean :isGe
-    	t.boolean :isRequired
+      t.string :program_revision_code
+      t.string :title
 
       t.timestamps
     end

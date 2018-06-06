@@ -6,7 +6,7 @@ class CreateSubjects < ActiveRecord::Migration[5.1]
 
     create_table :subjects do |t|
     	t. references :division, foreign_key: true
-    	t.references :subjects, foreign_key: true
+    	t.references :fake_subject, foreign_key: true
 
     	t.string :subject_id
     	t.string :name

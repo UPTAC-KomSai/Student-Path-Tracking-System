@@ -1,0 +1,91 @@
+<body class="fixed-nav sticky-footer bg-dark" id="page-top">
+  <%= render partial: "shared/navigation", object: @study_path %>
+  <div class="content-wrapper">
+    <div class="container-fluid">
+      <!-- Breadcrumbs-->
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href="/student/dashboard">Student</a>
+        </li>
+        <li class="breadcrumb-item">
+          <%= link_to "Study Path", study_path_path(@study_path) %>
+        </li>
+        <li class="breadcrumb-item active">Update Subjects</li>
+      </ol>
+      <div class="card mb-3">
+        <div class="card-header">
+          <i class="fa fa-fw fa-bookmark"></i> <%= @year %> Year - <%= @semester %> Semester
+          <%= link_to save_subjects_path(@study_path, "year" => "First", "semester" => "First"), class: 'btn btn-success btn-sm float-right d-inline', role: 'button' do %>
+            <i class="fa fa-fw fa-save"></i> Save Subjects
+          <% end %>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-bordered" width="100%" cellspacing="0" id="subjectsTable">
+              <thead class="thead-light">
+                <tr>
+                  <th>Subject</th>
+                  <th>Name</th>
+                  <th>Units</th>
+                  <th>Prerequisites</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <td></td>
+                  <td></td>
+                  <td>3.0</td>
+                  <td></td>
+                  <td>
+                    <button class="btn btn-danger btn-sm">
+                      <i class="fa fa-fw fa-minus-square"></i> Remove
+                    </button>
+                  </td>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="card-footer small text-muted">
+          <i class="fa fa-fw fa-database"></i> Number of Units :
+        </div>
+      </div>
+      <div class="card mb-3">
+        <div class="card-header">
+          <i class="fa fa-fw fa-book"></i> Subject Offerings</div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+              <thead>
+                <tr>
+                  <th>Subject</th>
+                  <th>Name</th>
+                  <th>Units</th>
+                  <th>Prerequisites</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @subjects.each do |content| %>
+                    <tr>
+                      <td><%= content.subject_id %></td>
+                      <td><%= content.name %></td>
+                      <td><%= content.units %></td>
+                      <td><%= content.pre_req%></td>
+                      <td>
+                          <button class="btn btn-warning btn-sm">
+                            <i class="fa fa-fw fa-plus-square"></i> Add
+                          </button>
+                      </td>
+                    </tr>
+                  <% end %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="card-footer small text-muted">All subjects are based from crs.upv.edu.ph.</div>
+      </div>
+      <%= render "shared/logout_modal" %>
+    </div>
+    <%= render "shared/footer" %>
+  </div>
+</body>

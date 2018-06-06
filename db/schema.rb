@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180517150327) do
+ActiveRecord::Schema.define(version: 20180605222131) do
 
   create_table "degrees", force: :cascade do |t|
     t.integer "division_id"
@@ -27,12 +27,17 @@ ActiveRecord::Schema.define(version: 20180517150327) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "fake_subjects", force: :cascade do |t|
+    t.string "subject_code"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "study_paths", force: :cascade do |t|
     t.integer "degree_id"
     t.integer "subject_id"
-    t.boolean "isMajor"
-    t.boolean "isGe"
-    t.boolean "isRequired"
+    t.string "program_revision_code"
+    t.string "title"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["degree_id"], name: "index_study_paths_on_degree_id"
@@ -41,7 +46,7 @@ ActiveRecord::Schema.define(version: 20180517150327) do
 
   create_table "subjects", force: :cascade do |t|
     t.integer "division_id"
-    t.integer "subjects_id"
+    t.integer "fake_subject_id"
     t.string "subject_id"
     t.string "name"
     t.string "description"
@@ -50,7 +55,7 @@ ActiveRecord::Schema.define(version: 20180517150327) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["division_id"], name: "index_subjects_on_division_id"
-    t.index ["subjects_id"], name: "index_subjects_on_subjects_id"
+    t.index ["fake_subject_id"], name: "index_subjects_on_fake_subject_id"
   end
 
 end
