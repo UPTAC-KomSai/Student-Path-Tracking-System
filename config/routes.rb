@@ -12,7 +12,8 @@ Rails.application.routes.draw do
   get 'student/grades', :to => 'students#grades'
 
   resources :study_paths
+  get 'study_path/:id/remove_subject', :to => 'study_paths#remove_subject', as: 'remove_subject'
+  get 'study_path/:id/add_subject', :to => 'study_paths#add_subject', as: 'add_subject'
   get 'study_path/:id/update_subjects', :to => 'study_paths#update_subjects', as: 'update_subjects'
-  post 'study_path/:id/save_subjects', :to => 'study_paths#save_subjects', as: 'save_subjects'
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end

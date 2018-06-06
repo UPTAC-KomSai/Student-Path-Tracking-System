@@ -15,9 +15,6 @@
       <div class="card mb-3">
         <div class="card-header">
           <i class="fa fa-fw fa-bookmark"></i> <%= @year %> Year - <%= @semester %> Semester
-          <%= link_to save_subjects_path(@study_path, "year" => "First", "semester" => "First"), class: 'btn btn-success btn-sm float-right d-inline', role: 'button' do %>
-            <i class="fa fa-fw fa-save"></i> Save Subjects
-          <% end %>
         </div>
         <div class="card-body">
           <div class="table-responsive">
@@ -32,15 +29,17 @@
                 </tr>
               </thead>
               <tbody>
-                <td></td>
-                  <td></td>
-                  <td>3.0</td>
-                  <td></td>
-                  <td>
-                    <button class="btn btn-danger btn-sm">
-                      <i class="fa fa-fw fa-minus-square"></i> Remove
-                    </button>
-                  </td>
+                <% if !@current_subjects.nil? %>
+                  <% @current_subjects.each do |subj| %>
+                    <tr>
+                      <td><%= subj.subject_id %></td>
+                      <td><%= subj.name %></td>
+                      <td><%= subj.units %></td>
+                      <td><%= subj.pre_req %></td>
+                      <td></td>
+                    </tr>
+                  <% end %>
+                <% end %>
               </tbody>
             </table>
           </div>
@@ -72,9 +71,9 @@
                       <td><%= content.units %></td>
                       <td><%= content.pre_req%></td>
                       <td>
-                          <button class="btn btn-warning btn-sm">
-                            <i class="fa fa-fw fa-plus-square"></i> Add
-                          </button>
+                          <%= link_to add_subject_path("study_path" => @study_path.id, "subject" => content.id, "year" => "First", "semester" => "First"), class: 'btn btn-warning btn-sm', role: 'button' do %>
+                            <i class="fa fa-fw fa-save"></i> Add
+                          <% end %>
                       </td>
                     </tr>
                   <% end %>

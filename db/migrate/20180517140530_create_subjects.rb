@@ -10,6 +10,7 @@ class CreateSubjects < ActiveRecord::Migration[5.1]
 
     	t.string :subject_id
     	t.string :name
+      t.string :pre_req
     	t.string :description
     	t.integer :units
     	t.boolean :isGe

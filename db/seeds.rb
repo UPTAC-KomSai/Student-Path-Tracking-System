@@ -98,7 +98,7 @@ subjects.each do |subj|
   
   if subj[:pre_req] == " " or subj[:pre_req].nil?
     Subject.create(division_id: (Division.find_by name: subj[:offering_unit_campus]).id, fake_subject_id: nil,subject_id: subj[:code].strip, name: subj[:title], description: subj[:description],
-    units: units,isGe: isGE)
+    pre_req: subj[:pre_req] ,units: units,isGe: isGE)
   else
     pre_req = subj[:pre_req].split(",")
     pre_req.each do |p|
@@ -108,7 +108,7 @@ subjects.each do |subj|
         units: units,isGe: isGE)
       else
         Subject.create(division_id: (Division.find_by name: subj[:offering_unit_campus]).id, fake_subject_id: (FakeSubject.find_by subject_code: p).id,subject_id: subj[:code].strip, name: subj[:title], description: subj[:description],
-        units: units,isGe: isGE)
+        pre_req: subj[:pre_req], units: units,isGe: isGE)
       end
     end
   end

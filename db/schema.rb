@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180605222131) do
+ActiveRecord::Schema.define(version: 20180606034615) do
 
   create_table "degrees", force: :cascade do |t|
     t.integer "division_id"
@@ -33,6 +33,15 @@ ActiveRecord::Schema.define(version: 20180605222131) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "study_path_subjects", force: :cascade do |t|
+    t.integer "study_path_id"
+    t.integer "subject_id"
+    t.string "year"
+    t.string "semester"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "study_paths", force: :cascade do |t|
     t.integer "degree_id"
     t.integer "subject_id"
@@ -49,6 +58,7 @@ ActiveRecord::Schema.define(version: 20180605222131) do
     t.integer "fake_subject_id"
     t.string "subject_id"
     t.string "name"
+    t.string "pre_req"
     t.string "description"
     t.integer "units"
     t.boolean "isGe"
