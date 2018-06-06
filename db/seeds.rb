@@ -56,7 +56,7 @@ while i < num do
   	course_id = temp[i + 1]
   	#puts "[#{course_id}]"
   	course_id = course_id.strip
-  	print "   [#{course_id}]"
+  	print "   [course_id: #{course_id}]"
   	course_name = temp[i + 3]
   elsif temp[i] =~ /^ Description: /
   	course_desc = temp[i + 1]
@@ -160,7 +160,7 @@ course_id_list.each do |cid|
 	 # puts "not nil"
 	  prereq_id = prereq_obj.id
 
-	  puts "[#{cid}] = [#{prereq_str}]"
+	  puts "[course_id: #{cid}] = [prereq_str: #{prereq_str}]"
 	  subject = Subject.where(subject_id: cid).first
 	  if subject != nil
 	     subject.subjects_id = prereq_id
