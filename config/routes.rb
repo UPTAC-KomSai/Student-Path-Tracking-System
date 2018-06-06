@@ -10,6 +10,8 @@ Rails.application.routes.draw do
   get 'student/dashboard', :to => 'students#dashboard'
   get 'student/charts', :to => 'students#charts'
   get 'student/grades', :to => 'students#grades'
+  get 'student/unitsEarned', :to => 'students#unitsEarned'
+  get 'student/unitsToGo', :to => 'students#unitsToGo'
 
   resources :study_paths
   get 'study_path/:id/remove_subject', :to => 'study_paths#remove_subject', as: 'remove_subject'

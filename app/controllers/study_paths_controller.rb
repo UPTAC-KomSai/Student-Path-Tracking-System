@@ -5,7 +5,8 @@ class StudyPathsController < ApplicationController
 		@course = @student.basic_info
 		@my_study_path = StudyPath.find_by degree_id: (Degree.find_by name: @course['degree_program'].gsub(".","")).id
 
-		@years = StudyPathSubject.where(study_path_id: @my_study_path.id).distinct.pluck(:year)
+    if !@my_study_path.nil?
+      @years = StudyPathSubject.where(study_path_id: @my_study_path.id).distinct.pluck(:year)
 		@semesters = StudyPathSubject.where(study_path_id: @my_study_path.id).distinct.pluck(:semester)
 
 		@subjects = Array.new
@@ -26,6 +27,7 @@ class StudyPathsController < ApplicationController
 		end
 
 		puts @subjects
+    end
 
 		@title = 'SPTS - Study Path'
 	end
