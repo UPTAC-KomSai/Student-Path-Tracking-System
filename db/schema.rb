@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180606034615) do
+ActiveRecord::Schema.define(version: 20180607063115) do
 
   create_table "degrees", force: :cascade do |t|
     t.integer "division_id"
@@ -34,9 +34,17 @@ ActiveRecord::Schema.define(version: 20180606034615) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "rgep_clusters", force: :cascade do |t|
+    t.string "name"
+    t.integer "units"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "study_path_subjects", force: :cascade do |t|
     t.integer "study_path_id"
     t.integer "subject_id"
+    t.integer "rgep"
     t.string "year"
     t.string "semester"
     t.datetime "created_at", null: false
@@ -45,13 +53,11 @@ ActiveRecord::Schema.define(version: 20180606034615) do
 
   create_table "study_paths", force: :cascade do |t|
     t.integer "degree_id"
-    t.integer "subject_id"
     t.string "program_revision_code"
     t.string "title"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["degree_id"], name: "index_study_paths_on_degree_id"
-    t.index ["subject_id"], name: "index_study_paths_on_subject_id"
   end
 
   create_table "subjects", force: :cascade do |t|
@@ -63,6 +69,7 @@ ActiveRecord::Schema.define(version: 20180606034615) do
     t.string "description"
     t.integer "units"
     t.boolean "isGe"
+    t.string "rgep"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["division_id"], name: "index_subjects_on_division_id"
