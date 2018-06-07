@@ -123,12 +123,12 @@ end
   RgepCluster.create(name: "Elective", units: 3.0)
 
   studyPath = Hash.new
-  ge_ah_id = RgepCluster.where(name: "GE (AH)").pluck(:id)
-  ge_mst_id = RgepCluster.where(name: "GE (MST)").pluck(:id)
-  ge_ssp_id = RgepCluster.where(name: "GE (SSP)").pluck(:id)
-  ge_pe_2_id = RgepCluster.where(name: "PE 2").pluck(:id)
-  ge_nstp_id = RgepCluster.where(name: "NSTP").pluck(:id)
-  elec_id = RgepCluster.where(name: "Elective").pluck(:id)
+  ge_ah_id = RgepCluster.where(name: "GE (AH)").pluck(:id).first
+  ge_mst_id = RgepCluster.where(name: "GE (MST)").pluck(:id).first
+  ge_ssp_id = RgepCluster.where(name: "GE (SSP)").pluck(:id).first
+  ge_pe_2_id = RgepCluster.where(name: "PE 2").pluck(:id).first
+  ge_nstp_id = RgepCluster.where(name: "NSTP").pluck(:id).first
+  elec_id = RgepCluster.where(name: "Elective").pluck(:id).first
 
   rgep_code = {ah: ge_ah_id, mst: ge_mst_id, ssp: ge_ssp_id, pe2: ge_pe_2_id, nstp: ge_nstp_id, elective: elec_id}
 
