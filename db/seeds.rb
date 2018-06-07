@@ -133,6 +133,62 @@ end
   rgep_code = {ah: ge_ah_id, mst: ge_mst_id, ssp: ge_ssp_id, pe2: ge_pe_2_id, nstp: ge_nstp_id, elective: elec_id}
 
   #BSCS major subjects
+  all_major_subjects = [[{subject_id: "CMSC 11", name: "Introduction to Computer Science", pre_req: "Math 17", units: 3.0, isGe: false},
+              {subject_id:  "Math 17", name: "Algebra and Trigonometry", pre_req: "1 yr. of HS Algebra", units: 5.0, isGe: false}, 
+              {subject_id:  "P.E. 1", name:  "Foundation of Physical Fitness", pre_req:  nil, units: 2.0, isGe: true}, 
+              {subject_id:  "CMSC 21", name: "Fundamentals of Programming", pre_req:  "CMSC 11", units: 3.0, isGe: false}, 
+              {subject_id:  "CMSC 56", name: "Discrete Mathematical Structures in Computer Science 1", pre_req:  "Math 17, CMSC 11", units: 3.0, isGe: false}, 
+              {subject_id:  "Math 53", name: "Elementary Analysis I", pre_req:  "Math 17 or equivalent",  units: 5.0, isGe: false}, 
+              {subject_id:  "CMSC 22", name: "Fundamentals of Object-oriented Programming", pre_req: "CMSC 21",  units: 3.0, isGe: false}, 
+              {subject_id:  "CMSC 57", name: "Discrete Mathematical Structures in Computer Science 2", pre_req: "CMSC 56", units: 3.0, isGe: false}, 
+              {subject_id:  "Physics 51", name: "General Physics 1", pre_req:  "Math 17 or equivalent", units: 3.0, isGe: false}, 
+              {subject_id:  "Physics 51.1", name: "General Physics 1 Laboratory", pre_req: "Physics 51", units: 1.0, isGe: false}, 
+              {subject_id:  "Math 54", name: "Elementary Analysis II", pre_req:  "Math 53", units: 5.0, isGe: false}, 
+              {subject_id:  "CMSC 123", name: "Data Structures", pre_req: "CMSC 21, CMSC 57", units: 3.0, isGe: false}, 
+              {subject_id:  "CMSC 130", name: "Logic Design and Digital Computer Circuits", pre_req: "CMSC 11", units: 3.0, isGe: false}, 
+              {subject_id:  "Physics 52", name: "General Physics II", pre_req: "Physics 51", units: 3.0, isGe: false}, 
+              {subject_id:  "Physics 52.1", name: "General Physics II, Lab", pre_req: "Physics 52", units: 1.0, isGe: false}, 
+              {subject_id:  "Math 55", name: "Elementary Analysis III", pre_req: "Math 54", units: 3.0, isGe: false}, 
+              {subject_id:  "CMSC 127", name: "File Processing and Database System", pre_req: "CMSC 123", units: 3.0, isGe: false}, 
+              {subject_id:  "CMSC 131", name: "Intro in Computer Organization and Machine Level", pre_req: "CMSC 21, CMSC 130", units: 3.0, isGe: false}, 
+              {subject_id:  "CMSC 124", name: "Automata and Language Theory", pre_req: "CMSC 57", units: 3.0, isGe: false}, 
+              {subject_id:  "CMSC 142", name: "Designs and Analysis of Algorithms", pre_req: "CMSC 123", units: 3.0, isGe: false}, 
+              {subject_id:  "Stat 105", name: "Introduction to Statistical Analysis", pre_req: "Math 17", units: 3.0, isGe: false}, 
+              {subject_id:  "CMSC 141", name: "Design and Implementation of Programming Languages", pre_req: "CMSC 123, CMSC 124", units: 3.0, isGe: false}, 
+              {subject_id:  "CMSC 125", name: "Operating Systems", pre_req: "CMSC 123, CMSC 131", units: 3.0, isGe: false}, 
+              {subject_id:  "CMSC 128", name: "Intro to Software Engineering", pre_req: "CMSC 123", units: 3.0, isGe: false}, 
+              {subject_id:  "CMSC 195", name: "Practicum", pre_req: "Consent of Instructor", units: 3.0, isGe: false}, 
+              {subject_id:  "CMSC 121", name: "Internet Technologies", pre_req: "CMSC 22", units: 3.0, isGe: false}, 
+              {subject_id:  "CMSC 132", name: "Computer Architecture", pre_req: "CMSC 131", units: 3.0, isGe: false}, 
+              {subject_id:  "CMSC 198.1", name:  "Special Problem 1", pre_req: "Senior Standing", units: 3.0, isGe: false}, 
+              {subject_id:  "PI 100", name: "The Life and Works of Rizal", pre_req: "Senior Standing", units: 3.0, isGe: false}, 
+              {subject_id:  "CMSC 135", name: "Data Communication and Networking", pre_req: "CMSC 125", units: 3.0, isGe: false}, 
+              {subject_id:  "CMSC 198.2", name: "Special Problem 2", pre_req: "CMSC 198.1", units: 3.0, isGe: false}, 
+              {subject_id:  "CMSC 196", name: "Undergraduate Seminar", pre_req: "Senior Standing", units: 1.0, isGe: false}]]
+
+  # Pre-create prerequisite subjects not already in FakeSubjects table
+  all_major_subjects.each do |course|
+    course.each do |subj|
+      if(FakeSubject.where(subject_code: subj[:pre_req]).pluck(:id).first == nil)
+        FakeSubject.create(subject_code: subj[:pre_req])
+      end   
+    end
+  end                
+
+  # create the missing Subjects
+  all_major_subjects.each do |course|
+    course.each do |subj|
+      if(Subject.where(subject_id: subj[:subject_id]).pluck(:id).first == nil)
+          Subject.create(division_id: (Division.find_by name: "NSMD").id, 
+                          fake_subject_id: (FakeSubject.find_by subject_code: subj[:pre_req]).id,
+                          subject_id: subj[:subject_id].strip, name: subj[:name], 
+                          pre_req: subj[:pre_req], 
+                          units: subj[:units],
+                          isGe: subj[:isGE])
+      end   
+    end
+  end
+  
   bscs_majors = {
                  pe1: Subject.where(subject_id: "P.E. 1").pluck(:id).first,
                  math_17: Subject.where(subject_id: "Math 17").pluck(:id).first,

@@ -3,52 +3,74 @@ class StudyPathsController < ApplicationController
 
 	def show
 		@course = @student.basic_info
-		@my_study_path = StudyPath.find_by degree_id: (Degree.find_by name: @course['degree_program'].gsub(".","")).id
 
-		@myGrades = @student.grades
-		@totalUnits = 0
+		degree_id = Degree.where(name: @course['degree_program'].gsub(".","")).pluck(:id).first
+		study_path_record = StudyPath.where(degree_id: degree_id).first
+
+		study_path = {id: study_path_record.id, program_revision_code: study_path_record.program_revision_code, title: study_path_record.title}		
+		puts study_path
+		
+		@my_subjects = StudyPathSubject.where(study_path_id: study_path[:id])
+		# puts "@my_subjects = #{@my_subjects}"
+		# @my_subjects.each do |subject|
 
 		@entries = Array.new
-		@myGrades.each do |content|
-			entry = Array.new
-			content.each do |row|
-				if row[:subj].include? "Semester" or row[:subj].include? "Summer"
-					entry << row
-				end
-
-				if row.length != 1
-					subject = Hash.new
-					subject[:subject] = row[:subj]
-					temp = Subject.where(subject_id: "#{row[:subj]}").distinct.pluck(:name).join(",")
-					subject[:name] = temp
-					subject[:units] = row[:units]
-					temp = Subject.where(subject_id: "#{row[:subj]}").distinct.pluck(:pre_req).join(",")
-					subject[:prerequisites] = temp
-					subject[:grade] = row[:finalGrade]
-
-					if row[:finalGrade].include? " INC " or row[:finalGrade].include? " 4.0 "
-						if !row[:completionGrade].eql? " "
-							subject[:grade] = row[:completionGrade]
-						end
-					end
-
-					if (!row[:finalGrade].eql? " 5.0 " or !row[:finalGrade].eql? " 4.0 " or !row[:finalGrade].eql? " INC " or !row[:finalGrade].eql? " NO GRADE ") and !row[:units].include? "("
-						@totalUnits = @totalUnits + row[:units].to_i
-					end
-
-					if row[:finalGrade].eql? " INC " and !row[:completionGrade].eql? " NO GRADE "
-						if (!row[:completionGrade].eql? " 5.0 " or !row[:completionGrade].eql? " 4.0 ") and !row[:units].include? "("
-							@totalUnits = @totalUnits + row[:units].to_i
-						end
-					end
-
-					entry << subject
-				end
-			end
+		@my_subjects.each do |subject|			
+			entry = Hash.new
+			entry[:subject] = Subject.where(id: subject[:subject_id]).distinct.pluck(:subject_id)
+			entry[:name] = Subject.where(id: subject[:subject_id]).distinct.pluck(:name)
+			entry[:units] = Subject.where(id: subject[:subject_id]).distinct.pluck(:units)
+			entry[:prerequisites] = Subject.where(id: subject[:subject_id]).distinct.pluck(:pre_req).join(",")			
+			puts = entry[:name]
 			@entries << entry
 		end
+		
+		puts @entries
 
-		puts @myGrades
+		# @myGrades = @student.grades
+		# @totalUnits = 0
+
+		# @entries = Array.new
+		# @myGrades.each do |content|
+		# 	entry = Array.new
+		# 	content.each do |row|
+		# 		if row[:subj].include? "Semester" or row[:subj].include? "Summer"
+		# 			entry << row
+		# 		end
+
+		# 		if row.length != 1
+		# 			subject = Hash.new
+		# 			subject[:subject] = row[:subj]
+		# 			temp = Subject.where(subject_id: "#{row[:subj]}").distinct.pluck(:name).join(",")
+		# 			subject[:name] = temp
+		# 			subject[:units] = row[:units]
+		# 			temp = Subject.where(subject_id: "#{row[:subj]}").distinct.pluck(:pre_req).join(",")
+		# 			subject[:prerequisites] = temp
+		# 			subject[:grade] = row[:finalGrade]
+
+		# 			if row[:finalGrade].include? " INC " or row[:finalGrade].include? " 4.0 "
+		# 				if !row[:completionGrade].eql? " "
+		# 					subject[:grade] = row[:completionGrade]
+		# 				end
+		# 			end
+
+		# 			if (!row[:finalGrade].eql? " 5.0 " or !row[:finalGrade].eql? " 4.0 " or !row[:finalGrade].eql? " INC " or !row[:finalGrade].eql? " NO GRADE ") and !row[:units].include? "("
+		# 				@totalUnits = @totalUnits + row[:units].to_i
+		# 			end
+
+		# 			if row[:finalGrade].eql? " INC " and !row[:completionGrade].eql? " NO GRADE "
+		# 				if (!row[:completionGrade].eql? " 5.0 " or !row[:completionGrade].eql? " 4.0 ") and !row[:units].include? "("
+		# 					@totalUnits = @totalUnits + row[:units].to_i
+		# 				end
+		# 			end
+
+		# 			entry << subject
+		# 		end
+		# 	end
+		# 	@entries << entry
+		# end
+
+		# puts @myGrades
 	end
 
 	def new
