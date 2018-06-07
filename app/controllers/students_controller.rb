@@ -17,20 +17,21 @@ class StudentsController < ApplicationController
     @myGrades.each_with_index do |content, i|
         if i == @myGrades.length-1
           @labels << content[0][:subj]
-         else
+        else
           @labels << content[0][:subj]+ "~"
-         end
-       my_units << content[(content.length - 1)][:finalGrade]
+        end
+      my_units << content[(content.length - 1)][:finalGrade]
     end
     
-     my_units.each_with_index do |unit, i|
-         if i == my_units.length-1
-          @gwa << unit[(unit.index("GWA")+4), (unit.length - unit.index("GWA")+2)] 
-         else
-           @gwa << unit[(unit.index("GWA")+4), (unit.length - unit.index("GWA")+2)]+ ","
-          end
+    my_units.each_with_index do |unit, i|
+      if i == my_units.length-1
+        @gwa << unit[(unit.index("GWA")+4), (unit.length - unit.index("GWA")+2)] 
+      else
+        @gwa << unit[(unit.index("GWA")+4), (unit.length - unit.index("GWA")+2)]+ ","
       end
+    end
   end
+
   def grades
     @myGrades = @student.grades
     
