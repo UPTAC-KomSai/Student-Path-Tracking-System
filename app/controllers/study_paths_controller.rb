@@ -17,11 +17,15 @@ class StudyPathsController < ApplicationController
 		@entries = Array.new
 		@my_subjects.each do |subject|			
 			entry = Hash.new
-			entry[:subject] = Subject.where(id: subject[:subject_id]).distinct.pluck(:subject_id)
-			entry[:name] = Subject.where(id: subject[:subject_id]).distinct.pluck(:name)
-			entry[:units] = Subject.where(id: subject[:subject_id]).distinct.pluck(:units)
-			entry[:prerequisites] = Subject.where(id: subject[:subject_id]).distinct.pluck(:pre_req).join(",")			
-			puts = entry[:name]
+			if subject[:subject_id] == nil && subject[:rgep] != nil
+				entry[:subject] = RgepCluster.where(id: subject[:rgep]).distinct.pluck(:name)
+				entry[:units] = RgepCluster.where(id: subject[:rgep]).distinct.pluck(:units)	
+			else
+				entry[:subject] = Subject.where(id: subject[:subject_id]).distinct.pluck(:subject_id)
+				entry[:name] = Subject.where(id: subject[:subject_id]).distinct.pluck(:name)
+				entry[:units] = Subject.where(id: subject[:subject_id]).distinct.pluck(:units)
+				entry[:prerequisites] = Subject.where(id: subject[:subject_id]).distinct.pluck(:pre_req).join(",")			
+			end
 			@entries << entry
 		end
 		
