@@ -6,7 +6,7 @@ class CreateStudyPaths < ActiveRecord::Migration[5.1]
     
     create_table :study_paths do |t|
     	t.references :degree, foreign_key: true
-    	t.references :subject, foreign_key: true
+    	#t.references :subject, foreign_key: true
 
       t.string :program_revision_code
       t.string :title

@@ -27,16 +27,16 @@
             <div class="card mb-3">
               <div class="card-header">
                 <div class="text-left">
-                  <strong>Program Code : </strong><span><%= @my_study_path.degree_id %></span>
+                  <strong>Program Code : </strong><span><%= @my_study_path[:degree_id] %></span>
                 </div>
                 <div class="text-left">
-                  <strong>Program Revision Code : </strong><span><%= @my_study_path.program_revision_code %></span>
+                  <strong>Program Revision Code : </strong><span><%= @my_study_path[:program_revision_code] %></span>
                 </div>
                 <div class="text-left">
                   <strong>Name : </strong><span><%= @basic_info['degree_program'] %></span>
                 </div>
                 <div class="text-left">
-                  <strong>Title : </strong><span><%= @my_study_path.title %></span>
+                  <strong>Title : </strong><span><%= @my_study_path[:title] %></span>
                 </div>
               </div>
               <div class="card-body">
@@ -56,19 +56,21 @@
                         <tbody>
                           <tr class="table-primary">
                             <td colspan="5">
-                              <h6 class="d-inline"><%= content[0][:subj].tr!('()', '') %></h6>                      
+                              <h6 class="d-inline"><%= "#{content[:year]} (#{content[:sem]})" %></h6>                      
                             </td>
                           <tr>  
                         </tbody>
                         <tbody>
-                          <% for i in 1..(content.length - 1) %>
-                            <tr>
-                              <td><%= content[i][:subject] %></td>
-                              <td><%= content[i][:name] %></td>
-                              <td><%= content[i][:units] %></td>
-                              <td><%= content[i][:prerequisites] %></td>
-                              <td><%= content[i][:grade] %></td>
-                            </tr>
+                          <% if !content[:subjects].nil? %>
+                            <% for i in 1..(content[:subjects].length - 1) %>
+                              <tr>
+                                <td><%= content[:subjects][i][:subject] %></td>
+                                <td><%= content[:subjects][i][:name] %></td>
+                                <td><%= content[:subjects][i][:units] %></td>
+                                <td><%= content[:subjects][i][:prerequisites] %></td>
+                                <td><%= content[:subjects][i][:grade] %></td>
+                              </tr>
+                            <% end %>
                           <% end %>
                         </tbody>
                       <% end %>
