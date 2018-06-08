@@ -17,20 +17,21 @@ class StudentsController < ApplicationController
     @myGrades.each_with_index do |content, i|
         if i == @myGrades.length-1
           @labels << content[0][:subj]
-         else
+        else
           @labels << content[0][:subj]+ "~"
-         end
-       my_units << content[(content.length - 1)][:finalGrade]
+        end
+      my_units << content[(content.length - 1)][:finalGrade]
     end
     
-     my_units.each_with_index do |unit, i|
-         if i == my_units.length-1
-          @gwa << unit[(unit.index("GWA")+4), (unit.length - unit.index("GWA")+2)] 
-         else
-           @gwa << unit[(unit.index("GWA")+4), (unit.length - unit.index("GWA")+2)]+ ","
-          end
+    my_units.each_with_index do |unit, i|
+      if i == my_units.length-1
+        @gwa << unit[(unit.index("GWA")+4), (unit.length - unit.index("GWA")+2)] 
+      else
+        @gwa << unit[(unit.index("GWA")+4), (unit.length - unit.index("GWA")+2)]+ ","
       end
+    end
   end
+
   def grades
     @myGrades = @student.grades
     
@@ -55,19 +56,6 @@ class StudentsController < ApplicationController
         end
       end
     end
-
-    my_units = Array.new 
-    @myGrades.each do |content|
-      my_units << content[(content.length - 1)][:subj]
-      content[0][:subj].tr!('()', '')
-       
-      my_units.each do |unit|
-        content[(content.length - 1)][:subj] =  unit[0, unit.index("Class")]
-        content[(content.length - 1)][:units] =  " " + unit[unit.index("Class"), unit.index("GWA") - unit.index("Class")]
-        content[(content.length - 1)][:finalGrade] = " "+ unit[unit.index("GWA"), unit.length - unit.index("GWA") -1]
-      end
-    end
-
     @title = 'SPTS - Grades'
   end
 

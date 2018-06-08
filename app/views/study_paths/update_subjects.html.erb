@@ -1,14 +1,13 @@
 <body class="fixed-nav sticky-footer bg-dark" id="page-top">
-  <%= render partial: "shared/navigation", object: @study_path %>
-  <div class="content-wrapper">
-    <div class="container-fluid">
+  <div class="container-fluid">
+      <div class ="content_wrapper bg-light">
       <!-- Breadcrumbs-->
       <ol class="breadcrumb">
         <li class="breadcrumb-item">
-          <a href="/student/dashboard">Student</a>
+          <a href="/admin/dashboard">Admin</a>
         </li>
         <li class="breadcrumb-item">
-          <%= link_to "Study Path", study_path_path(@study_path) %>
+          <%= link_to "Study Path", "/admin/#{@study_path.id}" %>
         </li>
         <li class="breadcrumb-item active">Update Subjects</li>
       </ol>
@@ -36,7 +35,11 @@
                       <td><%= subj.name %></td>
                       <td><%= subj.units %></td>
                       <td><%= subj.pre_req %></td>
-                      <td></td>
+                      <td>
+                         <%= link_to remove_subject_path("study_path" => @study_path.id, "subject" => subj.id, "year" => @year, "semester" => @semester), class: 'btn btn-danger btn-sm', role: 'button' do %>
+                            <i class="fa fa-fw fa-save"></i> Remove
+                          <% end %>
+                      </td>
                     </tr>
                   <% end %>
                 <% end %>
@@ -71,7 +74,7 @@
                       <td><%= content.units %></td>
                       <td><%= content.pre_req%></td>
                       <td>
-                          <%= link_to add_subject_path("study_path" => @study_path.id, "subject" => content.id, "year" => "First", "semester" => "First"), class: 'btn btn-warning btn-sm', role: 'button' do %>
+                          <%= link_to add_subject_path("study_path" => @study_path.id, "subject" => content.id, "year" => @year, "semester" => @semester), class: 'btn btn-warning btn-sm', role: 'button' do %>
                             <i class="fa fa-fw fa-save"></i> Add
                           <% end %>
                       </td>
@@ -82,9 +85,7 @@
           </div>
         </div>
         <div class="card-footer small text-muted">All subjects are based from crs.upv.edu.ph.</div>
+       </div>
       </div>
-      <%= render "shared/logout_modal" %>
-    </div>
-    <%= render "shared/footer" %>
-  </div>
+     </div>
 </body>

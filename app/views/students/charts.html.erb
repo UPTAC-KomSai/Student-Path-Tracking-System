@@ -1,4 +1,3 @@
-<%= javascript_include_tag "charts", "data-turbolinks-track" => true  %>
 <body class="fixed-nav sticky-footer bg-dark" id="page-top">
   <%= render partial: "shared/navigation", object: @study_plan %>
     <div class="content-wrapper">
@@ -8,14 +7,14 @@
         <li class="breadcrumb-item">
           <a href="#">Dashboard</a>
         </li>
-        <li class="breadcrumb-item active">My Study Path Charts</li>
+        <li class="breadcrumb-item active">Charts</li>
       </ol>
         <div class="card mb-3">
         <div class="card-header">
-          <i class="fa fa-area-chart"></i> MY GWA GRAPH </div>
+          <i class="fa fa-area-chart"></i> Semestral Performance</div>
         <div class="card-body">
-        <span id="gwa-variable" style = "display:none"><%= @gwa %></span>
-         <span id="label-variable" style = "display:none"><%= @labels %></span>
+        <span id="gwa-variable" style="display:none;"><%= @gwa.strip! %></span>
+        <span id="label-variable" style="display:none;"><%= @labels.strip! %></span>
         <canvas id="line-chart"></canvas>
         </div>
       </div>
@@ -23,5 +22,6 @@
       <%= render "shared/logout_modal" %>
     </div>
     <%= render "shared/footer" %>
+    <%= javascript_include_tag "charts", "data-turbolinks-track" => true  %>
   </div>
 </body>
