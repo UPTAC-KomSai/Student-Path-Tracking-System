@@ -234,7 +234,7 @@ end
   end
 
   #BSCS study path
-  studyPath = [{:year => :first_year, :sem => :first_sem, 
+  studyPath = [{:year => :"First Year", :sem => :"First Semester", 
                           :subjects => [{code: nil, rgep: rgep_code[:ah]}, 
                                         {code: nil, rgep: rgep_code[:ssp]}, 
                                         {code: nil, rgep: rgep_code[:mst]},                                         
@@ -243,7 +243,7 @@ end
                                         {code: bscs_majors[:math_17], rgep: nil},
                                         {code: bscs_majors[:cmsc_11], rgep: nil}
                                         ]},
-                {:year => :first_year, :sem => :second_sem, 
+                {:year => :"First Year", :sem => :"Second Semester", 
                           :subjects => [{code: nil, rgep: rgep_code[:ah]}, 
                                         {code: nil, rgep: rgep_code[:ssp]}, 
                                         {code: nil, rgep: rgep_code[:mst]}, 
@@ -253,7 +253,7 @@ end
                                         {code: bscs_majors[:cmsc_56], rgep: nil},
                                         {code: bscs_majors[:math_53], rgep: nil},
                                         ]},
-                {:year => :second_year, :sem => :first_sem, 
+                {:year => :"Second Year", :sem => :"First Semester", 
                           :subjects => [{code: nil, rgep: rgep_code[:ah]},                                         
                                         {code: nil, rgep: rgep_code[:ssp]},
                                         {code: nil, rgep: rgep_code[:pe2]}, 
@@ -263,7 +263,7 @@ end
                                         {code: bscs_majors[:physics_51_1], rgep: nil},
                                         {code: bscs_majors[:math_54], rgep: nil}
                                         ]},
-                {:year => :second_year, :sem => :second_sem, 
+                {:year => :"Second Year", :sem => :"Second Semester", 
                           :subjects => [{code: nil, rgep: rgep_code[:ah]},  
                                         {code: nil, rgep: rgep_code[:mst]},   
                                         {code: nil, rgep: rgep_code[:pe2]},   
@@ -273,7 +273,7 @@ end
                                         {code: bscs_majors[:physics_52_1], rgep: nil},
                                         {code: bscs_majors[:math_55], rgep: nil},
                                         ]},
-                {:year => :third_year, :sem => :first_sem, 
+                {:year => :"Third Year", :sem => :"First Semester", 
                           :subjects => [{code: nil, rgep: rgep_code[:ah]}, 
                                         {code: nil, rgep: rgep_code[:ssp]},  
                                         {code: bscs_majors[:cmsc_127], rgep: nil},
@@ -282,7 +282,7 @@ end
                                         {code: bscs_majors[:cmsc_142], rgep: nil},
                                         {code: bscs_majors[:stat_105], rgep: nil}
                                         ]},
-                {:year => :third_year, :sem => :second_sem, 
+                {:year => :"Third Year", :sem => :"Second Semester", 
                           :subjects => [{code: nil, rgep: rgep_code[:ssp]},                                         
                                         {code: nil, rgep: rgep_code[:elective]},
                                         {code: nil, rgep: rgep_code[:elective]}, 
@@ -290,9 +290,9 @@ end
                                         {code: bscs_majors[:cmsc_125], rgep: nil},
                                         {code: bscs_majors[:cmsc_128], rgep: nil}
                                         ]},
-                {:year => :third_year, :sem => :summer, 
+                {:year => :"Third Year", :sem => :"Summer", 
                           :subjects => [{code: bscs_majors[:cmsc_195], rgep: nil}]},                       
-                {:year => :fourth_year, :sem => :first_sem, 
+                {:year => :"Fourth Year", :sem => :"First Semester",  
                           :subjects => [{code: nil, rgep: rgep_code[:mst]}, 
                                         {code: nil, rgep: rgep_code[:ah]}, 
                                         {code: nil, rgep: rgep_code[:ssp]},                                                                                 
@@ -300,7 +300,7 @@ end
                                         {code: bscs_majors[:cmsc_132], rgep: nil},
                                         {code: bscs_majors[:cmsc_198_1], rgep: nil}
                                         ]},
-                {:year => :fourth_year, :sem => :second_sem, 
+                {:year => :"Fourth Year", :sem => :"Second Semester", 
                           :subjects => [{code: nil, rgep: rgep_code[:elective]}, 
                                         {code: nil, rgep: rgep_code[:elective]}, 
                                         {code: bscs_majors[:cmsc_135], rgep: nil}, 
