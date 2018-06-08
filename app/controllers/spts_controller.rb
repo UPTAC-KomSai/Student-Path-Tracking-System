@@ -16,6 +16,7 @@ class SptsController < ApplicationController
 
   def about
     @title = 'SPTS - About'
+		
   end
 
   def developers_portal
