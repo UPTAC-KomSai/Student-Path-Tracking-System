@@ -3,7 +3,7 @@ class StudyPathsController < ApplicationController
 
 	def show
 		@course = @student.basic_info
-		@my_study_path = StudyPath.find_by degree_id: (Degree.find_by name: @course['degree_program'].gsub(".","")).id
+		@my_study_path = StudyPath.find_by degree_id: (Degree.find_by name: params["study_path"]["degree_id"].gsub(".","")).id
 
 		@myGrades = @student.grades
 		@totalUnits = 0
@@ -47,7 +47,16 @@ class StudyPathsController < ApplicationController
 			end
 			@entries << entry
 		end
-
+    my_units = Array.new
+    
+    @myGrades.each do |content|
+       my_units << content[(content.length - 1)][:subj]
+    end
+    
+    @totalUnits = 0;
+    my_units.each do |unit|
+      @totalUnits = @totalUnits + unit[32, 4].to_i
+    end
 		puts @myGrades
 	end
 
@@ -66,26 +75,44 @@ class StudyPathsController < ApplicationController
 	end
 
 	def create
-		@course = @student.basic_info
     @title = 'SPTS - New Study Path'
-    @my_study_path = StudyPath.create(program_revision_code: params["study_path"]["program_revision_code"], title: params["study_path"]["title"],
-    degree_id: (Degree.find_by name: @course['degree_program'].gsub(".","")).id)
     
-    redirect_to "/study_paths/#{@my_study_path.id}"
+    if((StudyPath.find_by degree_id: (Degree.find_by name: params["study_path"]["degree_id"].gsub(".","")).id).nil?)
+      @my_study_path = StudyPath.create(program_revision_code: params["study_path"]["program_revision_code"], title: params["study_path"]["title"],
+      degree_id: (Degree.find_by name: params["study_path"]["degree_id"].gsub(".","")).id)
+      @@subject_session = nil
+    else
+      @my_study_path = StudyPath.find_by degree_id: (Degree.find_by name: params["study_path"]["degree_id"].gsub(".","")).id
+      @my_study_path.program_revision_code = params["study_path"]["program_revision_code"]
+      @my_study_path.title = params["study_path"]["title"]
+      @my_study_path.save
+    end
+    redirect_to "/admins/#{@my_study_path.id}"
 	end
 
 	def update_subjects
 		@title = 'SPTS - Update Subjects'
 		@year = params['year']
 		@semester = params['semester']
-
-		@current = StudyPathSubject.where(["study_path_id = ? and year = ? and semester = ?", @study_path.id, @year, @semester])
+    @id = params['id']
+    @subject_id = params['subject_id']
+    @study_path = StudyPath.find_by id: @id
+    
+		@current = StudyPathSubject.where(["study_path_id = ? and year = ? and semester = ?", @id, @year, @semester])
 		@current_subjects = Array.new
 		@current.each do |curr|
 			@current_subjects << Subject.find(curr.subject_id)
 		end
-
-		@subjects = Subject.group(:subject_id)
+    
+    @study_path_subjects = StudyPathSubject.where study_path_id: @id
+    if @study_path.subjects.count == 0
+       @subjects = Subject.group(:subject_id)
+    else
+      @subjects = Subject.group(:subject_id)
+      @study_path_subjects.each do |s|
+        @subjects = (@subjects.where.not id: s.subject_id).group(:subject_id)
+      end
+    end
 	end
 
 	def add_subject
@@ -95,7 +122,16 @@ class StudyPathsController < ApplicationController
 		@semester = params['semester']
 
 		@study_path_subject = StudyPathSubject.create(study_path_id: @study_path_id, subject_id: @subject_id, year: @year, semester: @semester)
+		redirect_to '/study_path/' + @study_path_id + '/update_subjects?semester=' + @semester + '&year=' + @year+ '&subject_id=' + @subject_id
+	end
+  def remove_subject
+		@study_path_id = params['study_path']
+		@subject_id = params['subject']
+		@year = params['year']
+		@semester = params['semester']
 
-		redirect_to '/study_path/' + @study_path_id + '/update_subjects?semester=' + @semester + '&year=' + @year
+		@study_path_subject = StudyPathSubject.find_by subject_id: @subject_id 
+    @study_path_subject.destroy 
+    redirect_to '/study_path/' + @study_path_id + '/update_subjects?semester=' + @semester + '&year=' + @year+ '&subject_id=' + @subject_id
 	end
 end

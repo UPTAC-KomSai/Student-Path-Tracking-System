@@ -113,3 +113,5 @@ subjects.each do |subj|
     end
   end
 end
+
+Admin.create(user_name: "jd_ultra_man", password: "ultra_power")

@@ -16,9 +16,9 @@ class ApplicationController < ActionController::Base
       @basic_info = @student.basic_info
       @study_path = StudyPath.where(degree_id: "#{@basic_info['degree_program']}").take
 
-      if @study_path.nil?
-      	@study_path = StudyPath.new
-      	@study_path.id = 0
-      end
+      #if @study_path.nil?
+      	#@study_path = StudyPath.new
+      	#@study_path.id = 0
+      #end
     end
 end

@@ -35,6 +35,14 @@ class SptsController < ApplicationController
   end
 
   def faculty_login
+    @admin = Admin.find_by id: 1
+    if ((params[:spts][:user] == @admin.user_name) and params[:spts][:password] == @admin.password)
+      session[:user] = {'id' => params[:spts][:user], 'password' => params[:spts][:password], 'type' => 'admin'}
+      redirect_to '/admin/dashboard'
+    else
+       flash[:login_error] = "Your credentials do not match our records!"
+        redirect_to '/' 
+    end
   end
 
   def logout
