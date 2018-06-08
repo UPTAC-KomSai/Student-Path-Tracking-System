@@ -1,5 +1,5 @@
 class ApplicationController < ActionController::Base
-  before_action :authenticate_user!, :except => [:index, :student_login, :faculty_login]
+  before_action :authenticate_user!, :except => [:index, :student_login, :faculty_login, :about, :developers_portal]
   protect_from_forgery with: :exception
 
   protected

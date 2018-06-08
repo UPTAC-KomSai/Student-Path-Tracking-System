@@ -118,6 +118,46 @@ class Student
     @myGrades << rows
     end
 
+    my_units = Array.new 
+    @myGrades.each do |content|
+      my_units << content[(content.length - 1)][:subj]
+      content[0][:subj].tr!('()', '')
+      
+      my_units.each do |unit|
+        if !unit.include? "GWA" and !unit.include? "Class Standing"
+          content[(content.length - 1)][:subj] = unit
+          content[(content.length - 1)][:units] = "Class Standing: No Basis"
+          content[(content.length - 1)][:finalGrade] = "GWA: No Basis"
+          next
+        end
+
+        content[(content.length - 1)][:subj] =  unit[0, unit.index("Class")]
+        content[(content.length - 1)][:units] =  " " + unit[unit.index("Class"), unit.index("GWA") - unit.index("Class")]
+        content[(content.length - 1)][:finalGrade] = " "+ unit[unit.index("GWA"), unit.length - unit.index("GWA") -1]
+      end
+    end
+
     return @myGrades
+  end
+
+  def units_earned
+    @myGrades = self.grades
+
+    my_units = Array.new
+    
+    @myGrades.each do |content|
+       my_units << content[(content.length - 1)][:subj]
+    end
+    
+    @total_units = 0;
+    my_units.each do |unit|
+      @total_units = @total_units + unit[32, 4].to_i
+    end
+
+    return @total_units
+  end
+
+  def units_remaining
+
   end
 end

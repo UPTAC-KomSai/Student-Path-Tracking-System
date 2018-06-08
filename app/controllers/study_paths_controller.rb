@@ -6,39 +6,27 @@ class StudyPathsController < ApplicationController
 		@my_study_path = StudyPath.find_by degree_id: (Degree.find_by name: @course['degree_program'].gsub(".","")).id
 
 		@myGrades = @student.grades
-		@totalUnits = 0
+		@totalUnits = @student.units_earned
 
 		@entries = Array.new
 		@myGrades.each do |content|
 			entry = Array.new
 			content.each do |row|
-				if row[:subj].include? "Semester" or row[:subj].include? "Summer"
+				if row[:subj].include? "Semester" or row[:subj].include? "Midyear"
 					entry << row
 				end
 
-				if row.length != 1
+				if row.length > 3
 					subject = Hash.new
 					subject[:subject] = row[:subj]
-					temp = Subject.where(subject_id: "#{row[:subj]}").distinct.pluck(:name).join(",")
-					subject[:name] = temp
+					subject[:name] = Subject.where(subject_id: "#{row[:subj]}").distinct.pluck(:name).join(",")
 					subject[:units] = row[:units]
-					temp = Subject.where(subject_id: "#{row[:subj]}").distinct.pluck(:pre_req).join(",")
-					subject[:prerequisites] = temp
+					subject[:prerequisites] = Subject.where(subject_id: "#{row[:subj]}").distinct.pluck(:pre_req).join(",")
 					subject[:grade] = row[:finalGrade]
 
-					if row[:finalGrade].include? " INC " or row[:finalGrade].include? " 4.0 "
-						if !row[:completionGrade].eql? " "
+					if row[:finalGrade].include? "INC" or row[:finalGrade].include? "4.0"
+						if !row[:completionGrade].strip.eql? ""
 							subject[:grade] = row[:completionGrade]
-						end
-					end
-
-					if (!row[:finalGrade].eql? " 5.0 " or !row[:finalGrade].eql? " 4.0 " or !row[:finalGrade].eql? " INC " or !row[:finalGrade].eql? " NO GRADE ") and !row[:units].include? "("
-						@totalUnits = @totalUnits + row[:units].to_i
-					end
-
-					if row[:finalGrade].eql? " INC " and !row[:completionGrade].eql? " NO GRADE "
-						if (!row[:completionGrade].eql? " 5.0 " or !row[:completionGrade].eql? " 4.0 ") and !row[:units].include? "("
-							@totalUnits = @totalUnits + row[:units].to_i
 						end
 					end
 
@@ -49,6 +37,8 @@ class StudyPathsController < ApplicationController
 		end
 
 		puts @myGrades
+
+		@title = "SPTS - Study Path"
 	end
 
 	def new

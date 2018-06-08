@@ -4,22 +4,31 @@ class StudentsController < ApplicationController
   before_action :access_crs
 
   def dashboard
-    @title = 'SPTS - Dashboard'
     @current_schedule = @student.current_schedule
+
+    @title = "SPTS - Dashboard"
   end
 
   def charts
-    @title = 'SPTS - Charts'
-    grades
+    @myGrades = @student.grades
+
     my_units = Array.new 
     @gwa = ""
     @labels = ""
     @myGrades.each_with_index do |content, i|
-        if i == @myGrades.length-1
-          @labels << content[0][:subj]
-        else
-          @labels << content[0][:subj]+ "~"
+      if content[0][:subj].include? "Midyear"
+        if i == @myGrades.length - 1
+          @labels = @labels[0, @labels.length-2]
         end
+
+        next
+      end
+
+      if i == @myGrades.length-1
+        @labels << content[0][:subj]
+      else
+        @labels << content[0][:subj]+ "~"
+      end
       my_units << content[(content.length - 1)][:finalGrade]
     end
     
@@ -30,6 +39,8 @@ class StudentsController < ApplicationController
         @gwa << unit[(unit.index("GWA")+4), (unit.length - unit.index("GWA")+2)]+ ","
       end
     end
+
+    @title = 'SPTS - Charts'
   end
 
   def grades
@@ -57,38 +68,18 @@ class StudentsController < ApplicationController
       end
     end
 
-    my_units = Array.new 
-    @myGrades.each do |content|
-      my_units << content[(content.length - 1)][:subj]
-      content[0][:subj].tr!('()', '')
-       
-      my_units.each do |unit|
-        content[(content.length - 1)][:subj] =  unit[0, unit.index("Class")]
-        content[(content.length - 1)][:units] =  " " + unit[unit.index("Class"), unit.index("GWA") - unit.index("Class")]
-        content[(content.length - 1)][:finalGrade] = " "+ unit[unit.index("GWA"), unit.length - unit.index("GWA") -1]
-      end
-    end
-
     @title = 'SPTS - Grades'
   end
 
   def unitsEarned
-    grades
-    my_units = Array.new
-    
-    @myGrades.each do |content|
-       my_units << content[(content.length - 1)][:subj]
-    end
-    
-    @total_units = 0;
-    my_units.each do |unit|
-      @total_units = @total_units + unit[32, 4].to_i
-    end
+    @total_units = @student.units_earned
+
     @title = 'SPTS - Units Earned'
   end
   
   def unitsToGo
-    grades
+    @myGrades = @student.grades
+
     my_units = Array.new
     
     @myGrades.each do |content|
@@ -99,6 +90,7 @@ class StudentsController < ApplicationController
     my_units.each do |unit|
       @total_units = @total_units + unit[32, 4].to_i
     end
+
+    @title = 'SPTS - Units To Go'
   end
-  @title = 'SPTS - Units To Go'
 end
