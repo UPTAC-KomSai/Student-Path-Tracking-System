@@ -86,41 +86,70 @@ subjects.each do |s|
   FakeSubject.create subject_code: s[:code].strip
 end
 
-subjects.each do |subj|
-  units = subj[:credit].to_i
-  isGE = false
-  if (subj[:rgep_cluster].nil?)
-  else
-    if subj[:rgep_cluster].include? "GE"
-      if(RgepCluster.where(name: subj[:rgep_cluster].strip).length == 0)
-         RgepCluster.create(name: subj[:rgep_cluster].strip, units: 3.0) 
-       end
-      isGE = true
-    end
-  end
-  
-  if subj[:pre_req] == " " or subj[:pre_req].nil?
-    Subject.create(division_id: (Division.find_by name: subj[:offering_unit_campus]).id, fake_subject_id: nil,subject_id: subj[:code].strip, name: subj[:title], description: subj[:description],
-    pre_req: subj[:pre_req] ,units: units,isGe: isGE, rgep: RgepCluster.where(name: subj[:rgep_cluster]))
-  else
-    pre_req = subj[:pre_req].split(",")
-    pre_req.each do |p|
-      p = p.strip
-      if (FakeSubject.find_by subject_code: p).nil?
-        Subject.create(division_id: (Division.find_by name: subj[:offering_unit_campus]).id, fake_subject_id: nil,subject_id: subj[:code].strip, name: subj[:title], description: subj[:description],
-        units: units,isGe: isGE, rgep: RgepCluster.where(name: subj[:rgep_cluster]))
-      else
-        Subject.create(division_id: (Division.find_by name: subj[:offering_unit_campus]).id, fake_subject_id: (FakeSubject.find_by subject_code: p).id,subject_id: subj[:code].strip, name: subj[:title], description: subj[:description],
-        pre_req: subj[:pre_req], units: units,isGe: isGE, rgep: RgepCluster.where(name: subj[:rgep_cluster]))
-      end
+# Iterate through all subjects and store RGEPs
+subjects.each do |subj|  
+  if subj[:rgep_cluster] != nil
+    rgep_str = subj[:rgep_cluster]
+    puts subj[:rgep_cluster]
+    if (rgep_str.include?("GE")) && RgepCluster.where(name: rgep_str.strip).length == 0
+      RgepCluster.create(name: subj[:rgep_cluster].strip, units: 3.0) 
     end
   end
 end
 
-  #Add Elective, PE 2, and NSTP to rgepcluster
-  RgepCluster.create(name: "PE 2", units: 2.0)
-  RgepCluster.create(name: "NSTP", units: 3.0)
-  RgepCluster.create(name: "Elective", units: 3.0)
+#Add Elective, PE 2, and NSTP to rgepcluster
+RgepCluster.create(name: "PE 2", units: 2.0)
+RgepCluster.create(name: "NSTP", units: 3.0)
+RgepCluster.create(name: "Elective", units: 3.0)
+
+subjects.each do |subj|
+  units = subj[:credit].to_i
+  isGE = false
+  if subj[:rgep_cluster].nil?
+  else
+    if subj[:rgep_cluster].include? "GE"      
+      isGE = true
+      puts "subject: [#{subj[:code]}] is GE"
+    end
+  end
+
+  rgep_id = nil
+  if isGE == true
+    rgep_id = RgepCluster.where(name: subj[:rgep_cluster].strip).distinct.pluck(:id).first    
+    puts "subject is ge and rgep is #{subj[:rgep_cluster]} & rgepId is #{rgep_id}" 
+  end
+
+  if subj[:pre_req] == " " or subj[:pre_req].nil?
+    Subject.create(division_id: (Division.find_by name: subj[:offering_unit_campus]).id, fake_subject_id: nil,subject_id: subj[:code].strip, name: subj[:title], description: subj[:description],
+    units: units, isGe: isGE, rgep_id: rgep_id)
+  else
+    pre_req = subj[:pre_req].split(",")
+    pre_req.each do |p|
+      p = p.strip
+
+      puts "subj[:pre_req]: [#{p}] FakeSubject: [#{(FakeSubject.find_by subject_code: p)}]"
+      if !((FakeSubject.find_by subject_code: p).nil?)
+        puts "    FakeSubject_id: #{(FakeSubject.find_by subject_code: p).id}"
+      else
+        puts "    prerequisite [#{p}] not found in database"
+      end
+
+      pre_req_id = nil
+      if !((FakeSubject.find_by subject_code: p).nil?)
+        pre_req_id = (FakeSubject.find_by subject_code: p).id
+      end
+
+      Subject.create(division_id: (Division.find_by name: subj[:offering_unit_campus]).id, 
+        fake_subject_id: pre_req_id, 
+        subject_id: subj[:code].strip, 
+        name: subj[:title], 
+        description: subj[:description], 
+        units: units, 
+        isGe: isGE, 
+        rgep_id: rgep_id)
+    end
+  end
+end
 
   studyPath = Hash.new
   ge_ah_id = RgepCluster.where(name: "GE (AH)").pluck(:id).first
@@ -135,7 +164,7 @@ end
   #BSCS major subjects
   all_major_subjects = [[{subject_id: "CMSC 11", name: "Introduction to Computer Science", pre_req: "Math 17", units: 3.0, isGe: false},
               {subject_id:  "Math 17", name: "Algebra and Trigonometry", pre_req: "1 yr. of HS Algebra", units: 5.0, isGe: false}, 
-              {subject_id:  "P.E. 1", name:  "Foundation of Physical Fitness", pre_req:  nil, units: 2.0, isGe: true}, 
+              {subject_id:  "PE 1", name:  "Foundation of Physical Fitness", pre_req:  nil, units: 2.0, isGe: true}, 
               {subject_id:  "CMSC 21", name: "Fundamentals of Programming", pre_req:  "CMSC 11", units: 3.0, isGe: false}, 
               {subject_id:  "CMSC 56", name: "Discrete Mathematical Structures in Computer Science 1", pre_req:  "Math 17, CMSC 11", units: 3.0, isGe: false}, 
               {subject_id:  "Math 53", name: "Elementary Analysis I", pre_req:  "Math 17 or equivalent",  units: 5.0, isGe: false}, 
@@ -182,7 +211,6 @@ end
           Subject.create(division_id: (Division.find_by name: "NSMD").id, 
                           fake_subject_id: (FakeSubject.find_by subject_code: subj[:pre_req]).id,
                           subject_id: subj[:subject_id].strip, name: subj[:name], 
-                          pre_req: subj[:pre_req], 
                           units: subj[:units],
                           isGe: subj[:isGE])
       end   
@@ -190,7 +218,7 @@ end
   end
   
   bscs_majors = {
-                 pe1: Subject.where(subject_id: "P.E. 1").pluck(:id).first,
+                 pe1: Subject.where(subject_id: "PE 1").pluck(:id).first,
                  math_17: Subject.where(subject_id: "Math 17").pluck(:id).first,
                  cmsc_11: Subject.where(subject_id: "CMSC 11").pluck(:id).first,
                  cmsc_21: Subject.where(subject_id: "CMSC 21").pluck(:id).first,
@@ -228,7 +256,7 @@ end
   degree_code = ["BSA", "BSM", "BS-Bio", "BSCS", "BA-Econ", "BA-PolSci", "BA-Psych", "BACA"]
 
   #Populate Study Path for each degree
-  for i in 0..degree_code.length do 
+  for i in 0...degree_code.length do 
     degree_id = Degree.where(code: degree_code[i]).distinct.pluck(:id).join(",")
     StudyPath.create(degree_id: degree_id, program_revision_code: prog_rev_code[i], title: "#{degree_code[i]}_sp")
   end

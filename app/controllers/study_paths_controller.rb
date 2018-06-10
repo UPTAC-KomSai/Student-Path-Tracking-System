@@ -8,12 +8,8 @@ class StudyPathsController < ApplicationController
 		study_path_record = StudyPath.where(degree_id: degree_id).first
 
 		@my_study_path = {id: study_path_record.id, program_revision_code: study_path_record.program_revision_code, title: study_path_record.title}				
-		@my_subjects = StudyPathSubject.where(study_path_id: @my_study_path[:id])
-		# puts "@my_subjects = #{@my_subjects}"
-		# @my_subjects.each do |subject|
+		@my_subjects = StudyPathSubject.where(study_path_id: @my_study_path[:id])	
 
-		@myGrades = @student.grades
-		
 		temp_year = ""
 		temp_sem = ""
 
@@ -52,51 +48,208 @@ class StudyPathsController < ApplicationController
 			@subject_persem << entry
 		end
 		
-		puts @entries		
 		@totalUnits = 0
-		subjects_taken = Array.new
-		# ah_taken = Array.new
-		# ssp_taken = Array.new
-		# mst_taken = Array.new
+		subjects_taken = Array.new		
+		ah_taken = Array.new
+		ssp_taken = Array.new
+		mst_taken = Array.new
+
+		# Replaces the year and sem entry with the year and sem the subjects were taken
+		curr_year = ""
+		curr_sem = ""
+		counter = 0
+		@myGrades = @student.grades
+		@myGrades.each do |entry|
+			entry.each do |row|					
+				if row[:subj].include? "Semester" or row[:subj].include? "Summer"
+					token = row[:subj].split("/")
+					curr_year = token[1].gsub(")", "").strip
+					curr_sem = token[0].gsub("(", "").strip
+					
+					@entries[counter][:year] = "#{@entries[counter][:year]} - #{curr_year}"
+					@entries[counter][:sem] = curr_sem
+					counter += 1
+				end			
+
+				if row.length > 1
+					subject = Hash.new
+					subject[:subject] = row[:subj]
+					subject[:name] = Subject.where(subject_id: "#{row[:subj]}").distinct.pluck(:name).join(",")
+					subject[:units] = row[:units]
+					subject[:prerequisites] = Subject.where(subject_id: "#{row[:subj]}").distinct.pluck(:pre_req).join(",")
+					subject[:grade] = row[:finalGrade]			
+					if row[:finalGrade].include? "INC" and (row[:completionGrade].strip).length > 0
+						puts "============ completionGrade: [#{row[:completionGrade].strip}]"
+						subject[:grade] = row[:completionGrade]
+					end
+
+					if subject[:prerequisites].include?("pre_req")
+						subject[:prerequisites] = ""
+					end
+
+					isGe = Subject.where(subject_id: "#{row[:subj]}").distinct.pluck(:isGe).first
+					if isGe != false
+						rgep = nil
+						subject_code = row[:subj]
+						puts "subject_code: [#{subject_code}]"
+						if !((Subject.find_by subject_id: subject_code).nil?)	
+							rgep = (Subject.find_by subject_id: row[:subj]).rgep_id
+						else
+							if (subject_code.include?("Eng") or subject_code.include?("Comm") or subject_code.include?("Lit"))								
+								ah_taken << subject
+								@entries[counter-1][:subjects].each do |subj|
+									if subj[:subject] == "GE (AH)"									
+										puts "subj[:subject]: [#{subj[:subject]}], subject[:subject]: [#{subject[:subject]}]"
+										subj[:subject] = subject[:subject]
+										subj[:name] = "--" unless subject[:name] != ""
+										subj[:units] = subject[:units]										
+										subj[:prerequisites] = "N/A" unless subject[:prerequisites] != ""
+										subj[:grade] = subject[:grade] 
+									end
+								end
+							elsif (subject_code.include?("Soc") or subject_code.include?("Philo") or subject_code.include?("Psych") or subject_code.include?("Hist"))
+								ssp_taken << subject
+								@entries[counter-1][:subjects].each do |subj|
+									if subj[:subject] == "GE (SSP)"
+										subj[:subject] = subject[:subject]
+										subj[:name] = "--" unless subject[:name] != ""
+										subj[:units] = subject[:units]										
+										subj[:prerequisites] = "N/A" unless subject[:prerequisites] != ""
+										subj[:grade] = subject[:grade] 
+									end
+								end
+							elsif (subject_code.include?("Envi") or subject_code.include?("Bio"))								
+								mst_taken << subject
+								@entries[counter-1][:subjects].each do |subj|
+									if subj[:subject] == "GE (MST)"
+										subj[:subject] = subject[:subject]
+										subj[:name] = "--" unless subject[:name] != ""
+										subj[:units] = subject[:units]										
+										subj[:prerequisites] = "N/A" unless subject[:prerequisites] != ""
+										subj[:grade] = subject[:grade] 
+									end
+								end
+							elsif (subject_code.include?("NSTP"))								
+								@entries[counter-1][:subjects].each do |subj|
+									if subj[:subject] == "NSTP"
+										subj[:subject] = subject[:subject]
+										subj[:name] = "--" unless subject[:name] != ""
+										subj[:units] = subject[:units]										
+										subj[:prerequisites] = "N/A" unless subject[:prerequisites] != ""
+										subj[:grade] = subject[:grade] 
+									end
+								end
+							elsif (subject_code.include?("PE"))								
+								@entries[counter-1][:subjects].each do |subj|
+									if subj[:subject] == "PE 2"
+										subj[:subject] = subject[:subject]
+										subj[:name] = "--" unless subject[:name] != ""
+										subj[:units] = subject[:units]										
+										subj[:prerequisites] = "N/A" unless subject[:prerequisites] != ""
+										subj[:grade] = subject[:grade] 
+									end
+								end
+							end								
+						end
+
+						if rgep != nil
+							rgep_name = (RgepCluster.find_by id: rgep).name
+							if rgep_name == "GE (AH)"
+								#puts "inculdes AH"
+								ah_taken << subject							
+								@entries[counter][:subjects].each do |subj|
+									if subj[:subject] == "GE (AH)"
+										subj[:subject] = subject[:subject]
+										subj[:name] = subject[:name]
+										subj[:units] = subject[:units]
+										subj[:prerequisites] = "N/A" unless subject[:prerequisites] != ""
+										subj[:grade] = subject[:grade] 
+									end
+								end
+
+							elsif rgep_name == "GE (MST)"
+								mst_taken << subject
+							elsif rgep_name == "GE (SSP)"
+								ssp_taken << subject
+								@entries[counter-1][:subjects].each do |subj|
+									if subj[:subject] == "GE (SSP)"									
+										subj[:subject] = subject[:subject]
+										subj[:name] = subject[:name]
+										subj[:units] = subject[:units]
+										subj[:prerequisites] = "N/A" unless subject[:prerequisites] != ""
+										subj[:grade] = subject[:grade] 
+									end
+								end
+							end			
+						end											
+					end
+
+					inStudyPlan = false
+					for i in 0...@entries.length do
+						@entries[i][:subjects].each do |subj|
+							if subj[:subject].strip.include?(subject[:subject].strip)								
+								subj[:grade] = subject[:grade] 
+								inStudyPlan = true
+								break
+							end							
+						end
+						if inStudyPlan then break end
+					end					
+
+					isStored = false
+					if !inStudyPlan
+						for i in 0...@entries.length do
+							@entries[i][:subjects].each do |subj|
+								if subj[:subject].strip.include?("Elective")
+									subj[:subject] = subject[:subject]
+									subj[:name] = subject[:name]
+									subj[:name] = "--" unless subject[:name] != ""
+									subj[:units] = subject[:units]
+									subj[:prerequisites] = "N/A" unless subject[:prerequisites] != ""
+									subj[:grade] = subject[:grade] 
+									isStored = true
+									break
+								end
+							end
+							if isStored then break end
+						end
+					end
+
+					if row[:finalGrade].include? " INC " or row[:finalGrade].include? " 4.0 "
+						if !row[:completionGrade].eql? " "
+							subject[:grade] = row[:completionGrade]
+						end
+					end
+
+					if (!row[:finalGrade].eql? " 5.0 " or !row[:finalGrade].eql? " 4.0 " or !row[:finalGrade].eql? " INC " or !row[:finalGrade].eql? " NO GRADE ") and !row[:units].include? "("
+						@totalUnits = @totalUnits + row[:units].to_i
+					end
+
+					if row[:finalGrade].eql? " INC " and !row[:completionGrade].eql? " NO GRADE "
+						if (!row[:completionGrade].eql? " 5.0 " or !row[:completionGrade].eql? " 4.0 ") and !row[:units].include? "("
+							@totalUnits = @totalUnits + row[:units].to_i
+						end
+					end
+					
+				end
+			end
+		end
+				
 		# elective_taken = Array.new
 		# pe_taken = Array.new
 		# nstp_taken
 
 		# puts @myGrades
 
-		@myGrades.each do |sem|
-			entry_persem = Array.new
-			sem.each do |entries|				
-				if entries.length > 1
-					subject = Hash.new
-					subject[:subject] = entries[:subj]
-					subject[:name] = Subject.where(subject_id: "#{entries[:subj]}").distinct.pluck(:name).join(",")
-					subject[:units] = entries[:units]
-					subject[:prerequisites] = Subject.where(subject_id: "#{entries[:subj]}").distinct.pluck(:pre_req).join(",")
-					subject[:grade] = entries[:finalGrade]
+		# entry_persem = Hash.new
+		# subject_persem = Array.new
+		# @myGrades.each do |sem|			
+		# 	sem.each do |entries|					
 
-
-					if entries[:finalGrade].include? " INC " or entries[:finalGrade].include? " 4.0 "
-						if !entries[:completionGrade].eql? " "
-							subject[:grade] = entries[:completionGrade]
-						end
-					end
-
-					if (!entries[:finalGrade].eql? " 5.0 " or !entries[:finalGrade].eql? " 4.0 " or !entries[:finalGrade].eql? " INC " or !entries[:finalGrade].eql? " NO GRADE ") and !entries[:units].include? "("
-						@totalUnits = @totalUnits + entries[:units].to_i
-					end
-
-					if entries[:finalGrade].eql? " INC " and !entries[:completionGrade].eql? " NO GRADE "
-						if (!entries[:completionGrade].eql? " 5.0 " or !entries[:completionGrade].eql? " 4.0 ") and !entries[:units].include? "("
-							@totalUnits = @totalUnits + entries[:units].to_i
-						end
-					end
-
-					entry_persem << subject
-				end
-			end
-			subjects_taken << entry_persem
-		end
+				
+		# 	end
+		# 	subjects_taken << entry_persem
+		# end
 
 		#puts @myGrades
 	end

@@ -62,7 +62,7 @@
                         </tbody>
                         <tbody>
                           <% if !content[:subjects].nil? %>
-                            <% for i in 1..(content[:subjects].length - 1) %>
+                            <% for i in 0..(content[:subjects].length - 1) %>
                               <tr>
                                 <td><%= content[:subjects][i][:subject] %></td>
                                 <td><%= content[:subjects][i][:name] %></td>

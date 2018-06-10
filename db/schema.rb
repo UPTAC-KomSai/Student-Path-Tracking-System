@@ -63,17 +63,17 @@ ActiveRecord::Schema.define(version: 20180607063115) do
   create_table "subjects", force: :cascade do |t|
     t.integer "division_id"
     t.integer "fake_subject_id"
+    t.integer "rgep_id"
     t.string "subject_id"
     t.string "name"
-    t.string "pre_req"
     t.string "description"
     t.integer "units"
     t.boolean "isGe"
-    t.string "rgep"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["division_id"], name: "index_subjects_on_division_id"
     t.index ["fake_subject_id"], name: "index_subjects_on_fake_subject_id"
+    t.index ["rgep_id"], name: "index_subjects_on_rgep_id"
   end
 
 end
