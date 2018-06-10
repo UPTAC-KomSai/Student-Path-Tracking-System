@@ -36,7 +36,30 @@ class StudyPathsController < ApplicationController
 			@entries << entry
 		end
 
-		puts @myGrades
+		@subject_codes = Array.new
+		@entries.each do |entry|
+			for i in 1...entry.length
+				@subject_codes << entry[i]
+			end
+		end
+
+		@blocks = Array.new
+		@entries.each do |entry|
+			block_row = Array.new
+			for i in 1...entry.length
+				block_row << entry[i][:subject]
+				next_subjects = Array.new
+				@subject_codes.each do |code|
+					if code[:prerequisites].include? entry[i][:subject]
+						next_subjects << code[:subject]
+					end
+				end
+				block_row << next_subjects
+			end
+			@blocks << block_row
+		end
+
+		puts @blocks
 
 		@title = "SPTS - Study Path"
 	end
