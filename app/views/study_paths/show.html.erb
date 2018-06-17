@@ -56,13 +56,13 @@
                         <tbody>
                           <tr class="table-primary">
                             <td colspan="5">
-                              <h6 class="d-inline"><%= "#{content[:year]} (#{content[:sem]})" %></h6>                      
+                              <h6 class="d-inline"><%= "#{content[:year]} Year (#{content[:sem]} Semester)" %></h6>                      
                             </td>
                           <tr>  
                         </tbody>
                         <tbody>
                           <% if !content[:subjects].nil? %>
-                            <% for i in 1..(content[:subjects].length - 1) %>
+                            <% for i in 0..(content[:subjects].length - 1) %>
                               <tr>
                                 <td><%= content[:subjects][i][:subject] %></td>
                                 <td><%= content[:subjects][i][:name] %></td>
@@ -80,6 +80,9 @@
               </div>
               <div class="card-header">
                 <h6>Total Units Earned : <%= @totalUnits %></h6>  
+              </div>
+              <div class="card-header">
+                <h6>Total Units Needed : <%= @units %></h6>  
               </div>
             </div>
           </div>

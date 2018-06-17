@@ -71,8 +71,10 @@ division_names.each do |div|
 end
 
 degrees.each_with_index do |degree, index| 
-  if index == 0 or index == 1
+  if index == 0
     Degree.create(division_id: (Division.find_by name: "MGT").id, code: degree_code[index], name: degree, years: 4)
+  elsif index == 1
+    Degree.create(division_id: (Division.find_by name: "MGT").id, code: degree_code[index], name: degree, years: 5)
   elsif index == 2 or index == 3
     Degree.create(division_id: (Division.find_by name: "NSMD").id, code: degree_code[index], name: degree, years: 4)
   elsif index == 4 or index == 5 or index == 6
@@ -100,18 +102,21 @@ subjects.each do |subj|
   end
   
   if subj[:pre_req] == " " or subj[:pre_req].nil?
+    puts "RGEP #{subj[:rgep_cluster]}"
     Subject.create(division_id: (Division.find_by name: subj[:offering_unit_campus]).id, fake_subject_id: nil,subject_id: subj[:code].strip, name: subj[:title], description: subj[:description],
-    pre_req: subj[:pre_req] ,units: units,isGe: isGE, rgep: RgepCluster.where(name: subj[:rgep_cluster]))
+    pre_req: subj[:pre_req] ,units: units,isGe: isGE, rgep: subj[:rgep_cluster])
   else
     pre_req = subj[:pre_req].split(",")
     pre_req.each do |p|
       p = p.strip
       if (FakeSubject.find_by subject_code: p).nil?
+        puts "RGEP #{subj[:rgep_cluster]}"
         Subject.create(division_id: (Division.find_by name: subj[:offering_unit_campus]).id, fake_subject_id: nil,subject_id: subj[:code].strip, name: subj[:title], description: subj[:description],
-        units: units,isGe: isGE, rgep: RgepCluster.where(name: subj[:rgep_cluster]))
+        units: units,isGe: isGE, rgep: subj[:rgep_cluster])
       else
+        puts "RGEP #{subj[:rgep_cluster]}"
         Subject.create(division_id: (Division.find_by name: subj[:offering_unit_campus]).id, fake_subject_id: (FakeSubject.find_by subject_code: p).id,subject_id: subj[:code].strip, name: subj[:title], description: subj[:description],
-        pre_req: subj[:pre_req], units: units,isGe: isGE, rgep: RgepCluster.where(name: subj[:rgep_cluster]))
+        pre_req: subj[:pre_req], units: units,isGe: isGE, rgep: subj[:rgep_cluster])
       end
     end
   end
@@ -228,13 +233,13 @@ end
   degree_code = ["BSA", "BSM", "BS-Bio", "BSCS", "BA-Econ", "BA-PolSci", "BA-Psych", "BACA"]
 
   #Populate Study Path for each degree
-  for i in 0..degree_code.length do 
+  for i in 0...degree_code.length do 
     degree_id = Degree.where(code: degree_code[i]).distinct.pluck(:id).join(",")
     StudyPath.create(degree_id: degree_id, program_revision_code: prog_rev_code[i], title: "#{degree_code[i]}_sp")
   end
 
   #BSCS study path
-  studyPath = [{:year => :"First Year", :sem => :"First Semester", 
+  studyPath = [{:year => :"First", :sem => :"First", 
                           :subjects => [{code: nil, rgep: rgep_code[:ah]}, 
                                         {code: nil, rgep: rgep_code[:ssp]}, 
                                         {code: nil, rgep: rgep_code[:mst]},                                         
@@ -243,7 +248,7 @@ end
                                         {code: bscs_majors[:math_17], rgep: nil},
                                         {code: bscs_majors[:cmsc_11], rgep: nil}
                                         ]},
-                {:year => :"First Year", :sem => :"Second Semester", 
+                {:year => :"First", :sem => :"Second", 
                           :subjects => [{code: nil, rgep: rgep_code[:ah]}, 
                                         {code: nil, rgep: rgep_code[:ssp]}, 
                                         {code: nil, rgep: rgep_code[:mst]}, 
@@ -253,7 +258,7 @@ end
                                         {code: bscs_majors[:cmsc_56], rgep: nil},
                                         {code: bscs_majors[:math_53], rgep: nil},
                                         ]},
-                {:year => :"Second Year", :sem => :"First Semester", 
+                {:year => :"Second", :sem => :"First", 
                           :subjects => [{code: nil, rgep: rgep_code[:ah]},                                         
                                         {code: nil, rgep: rgep_code[:ssp]},
                                         {code: nil, rgep: rgep_code[:pe2]}, 
@@ -263,7 +268,7 @@ end
                                         {code: bscs_majors[:physics_51_1], rgep: nil},
                                         {code: bscs_majors[:math_54], rgep: nil}
                                         ]},
-                {:year => :"Second Year", :sem => :"Second Semester", 
+                {:year => :"Second", :sem => :"Second", 
                           :subjects => [{code: nil, rgep: rgep_code[:ah]},  
                                         {code: nil, rgep: rgep_code[:mst]},   
                                         {code: nil, rgep: rgep_code[:pe2]},   
@@ -273,7 +278,7 @@ end
                                         {code: bscs_majors[:physics_52_1], rgep: nil},
                                         {code: bscs_majors[:math_55], rgep: nil},
                                         ]},
-                {:year => :"Third Year", :sem => :"First Semester", 
+                {:year => :"Third", :sem => :"First", 
                           :subjects => [{code: nil, rgep: rgep_code[:ah]}, 
                                         {code: nil, rgep: rgep_code[:ssp]},  
                                         {code: bscs_majors[:cmsc_127], rgep: nil},
@@ -282,7 +287,7 @@ end
                                         {code: bscs_majors[:cmsc_142], rgep: nil},
                                         {code: bscs_majors[:stat_105], rgep: nil}
                                         ]},
-                {:year => :"Third Year", :sem => :"Second Semester", 
+                {:year => :"Third", :sem => :"Second", 
                           :subjects => [{code: nil, rgep: rgep_code[:ssp]},                                         
                                         {code: nil, rgep: rgep_code[:elective]},
                                         {code: nil, rgep: rgep_code[:elective]}, 
@@ -290,9 +295,9 @@ end
                                         {code: bscs_majors[:cmsc_125], rgep: nil},
                                         {code: bscs_majors[:cmsc_128], rgep: nil}
                                         ]},
-                {:year => :"Third Year", :sem => :"Summer", 
+                {:year => :"Third", :sem => :"Summer", 
                           :subjects => [{code: bscs_majors[:cmsc_195], rgep: nil}]},                       
-                {:year => :"Fourth Year", :sem => :"First Semester",  
+                {:year => :"Fourth", :sem => :"First",  
                           :subjects => [{code: nil, rgep: rgep_code[:mst]}, 
                                         {code: nil, rgep: rgep_code[:ah]}, 
                                         {code: nil, rgep: rgep_code[:ssp]},                                                                                 
@@ -300,7 +305,7 @@ end
                                         {code: bscs_majors[:cmsc_132], rgep: nil},
                                         {code: bscs_majors[:cmsc_198_1], rgep: nil}
                                         ]},
-                {:year => :"Fourth Year", :sem => :"Second Semester", 
+                {:year => :"Fourth", :sem => :"Second", 
                           :subjects => [{code: nil, rgep: rgep_code[:elective]}, 
                                         {code: nil, rgep: rgep_code[:elective]}, 
                                         {code: bscs_majors[:cmsc_135], rgep: nil}, 
@@ -319,4 +324,12 @@ end
     end
   end
 
+Subject.create(division_id: 2, fake_subject_id: nil, subject_id: "Biology 20", name: "Living with Microbes in Sickness and in Health",
+units: 3, isGe: true, rgep: "GE (MST)")
+Subject.create(division_id: 2, fake_subject_id: nil, subject_id: "CMSC 197", name: "Trading",units: 3, isGe: true, rgep: "Elective")
+RgepCluster.create name: "PE 1", units: 2
+StudyPathSubject.create study_path_id: 4, subject_id: nil, rgep: 7, year: "First", semester: "First"
+a=Subject.find_by subject_id: "CMSC 140"
+a.rgep = "Elective"
+a.save
 Admin.create(user_name: "jd_ultra_man", password: "ultra_power")

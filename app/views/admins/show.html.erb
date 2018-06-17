@@ -58,11 +58,19 @@
                         <tbody>
                           <% content[:subjects].each do |subj| %>
                             <tr>
-                              <td><%= subj.subject_id %></td>
-                              <td><%= subj.name %></td>
-                              <td><%= subj.units %></td>
-                              <td><%= subj.pre_req %></td>
-                              <td></td>
+                               <%if subj.instance_of? RgepCluster%>
+                                  <td><%= subj.name %></td>
+                                  <td></td>
+                                  <td></td>
+                                  <td></td>
+                                  <td></td>
+                               <% else %>
+                                  <td><%= subj.subject_id %></td>
+                                  <td><%= subj.name %></td>
+                                  <td><%= subj.units %></td>
+                                  <td><%= subj.pre_req %></td>
+                                  <td></td>
+                               <% end %>
                             </tr>
                           <% end %>
                         </tbody>

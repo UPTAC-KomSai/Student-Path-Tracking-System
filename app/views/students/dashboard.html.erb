@@ -112,8 +112,9 @@
               <i class="fa fa-pie-chart"></i> Radar Chart
             </div>
           <div class="card-body">
-            <canvas id="myRadarChart" width="100%" height="140"></canvas>
-          </div>
+              <span id="radar-values" style="display:none;"><%= @radar_chart_values %></span>
+              <canvas id="myChart"></canvas>
+           </div>
         </div>
       </div>
     </div>
@@ -154,5 +155,6 @@
       <%= render "shared/logout_modal" %>
     </div>
     <%= render "shared/footer" %>
+    <%= javascript_include_tag "chart2", "data-turbolinks-track" => true  %>
   </div>
 </body>

@@ -7,7 +7,7 @@
           <a href="/admin/dashboard">Admin</a>
         </li>
         <li class="breadcrumb-item">
-          <%= link_to "Study Path", "/admin/#{@study_path.id}" %>
+          <%= link_to "Study Path", "/admins/#{@study_path.id}" %>
         </li>
         <li class="breadcrumb-item active">Update Subjects</li>
       </ol>
@@ -31,10 +31,17 @@
                 <% if !@current_subjects.nil? %>
                   <% @current_subjects.each do |subj| %>
                     <tr>
-                      <td><%= subj.subject_id %></td>
-                      <td><%= subj.name %></td>
-                      <td><%= subj.units %></td>
-                      <td><%= subj.pre_req %></td>
+                      <% if subj.instance_of? RgepCluster %>
+                        <td><%= subj.name%></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      <% else %>
+                         <td><%= subj.subject_id %></td>
+                         <td><%= subj.name %></td>
+                         <td><%= subj.units %></td>
+                         <td><%= subj.pre_req %></td>
+                      <% end %>
                       <td>
                          <%= link_to remove_subject_path("study_path" => @study_path.id, "subject" => subj.id, "year" => @year, "semester" => @semester), class: 'btn btn-danger btn-sm', role: 'button' do %>
                             <i class="fa fa-fw fa-save"></i> Remove

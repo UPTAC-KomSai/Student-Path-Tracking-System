@@ -47,7 +47,6 @@ class Student
         i = i + 1
       end
     end
-
     return info
   end
 
@@ -118,6 +117,102 @@ class Student
     @myGrades << rows
     end
 
+    my_units = Array.new 
+    @myGrades.each do |content|
+      my_units << content[(content.length - 1)][:subj]
+      content[0][:subj].tr!('()', '')
+      
+      my_units.each do |unit|
+        if !unit.include? "GWA" and !unit.include? "Class Standing"
+          content[(content.length - 1)][:subj] = unit
+          content[(content.length - 1)][:units] = "Class Standing: No Basis"
+          content[(content.length - 1)][:finalGrade] = "GWA: No Basis"
+          next
+        end
+
+        content[(content.length - 1)][:subj] =  unit[0, unit.index("Class")]
+        content[(content.length - 1)][:units] =  " " + unit[unit.index("Class"), unit.index("GWA") - unit.index("Class")]
+        content[(content.length - 1)][:finalGrade] = " "+ unit[unit.index("GWA"), unit.length - unit.index("GWA") -1]
+      end
+    end
+
     return @myGrades
+  end
+
+  def units_earned
+    @myGrades = self.grades
+
+    my_units = Array.new
+    
+    @myGrades.each do |content|
+       my_units << content[(content.length - 1)][:subj]
+    end
+    
+    @total_units = 0;
+    my_units.each do |unit|
+      @total_units = @total_units + unit[32, 4].to_i
+    end
+
+    return @total_units
+  end
+
+  def units_remaining
+    
+    degree_id = Degree.where(name: basic_info['degree_program'].gsub(".","")).pluck(:id).first
+		study_path_record = StudyPath.where(degree_id: degree_id).first
+    
+    @my_study_path = {id: study_path_record.id, program_revision_code: study_path_record.program_revision_code, title: study_path_record.title}				
+		@my_subjects = StudyPathSubject.where(study_path_id: @my_study_path[:id])
+    
+    temp_year = ""
+		temp_sem = ""
+
+		@entries = Array.new	
+		@entry_persem = Hash.new
+		@subject_persem = []
+
+		@my_subjects.each_with_index do |subject, index|			
+			if temp_year == "" then temp_year = subject[:year] end
+			if temp_sem == "" then temp_sem = subject[:semester] end
+
+			if temp_year != subject[:year] || temp_sem != subject[:semester] || index == @my_subjects.length-1
+				@entry_persem[:year] = temp_year
+				@entry_persem[:sem] = temp_sem
+				@entry_persem[:subjects] = @subject_persem				
+				temp_year = subject[:year]
+				temp_sem = subject[:semester]				
+				@entries << @entry_persem
+				@entry_persem = Hash.new
+				@subject_persem = Array.new
+			end
+
+			entry = Hash.new
+			if subject[:subject_id] == nil && subject[:rgep] != nil
+				entry[:subject] = RgepCluster.where(id: subject[:rgep]).distinct.pluck(:name).first
+				entry[:units] = "#{RgepCluster.where(id: subject[:rgep]).distinct.pluck(:units).first}.0"
+			else
+				entry[:subject] = Subject.where(id: subject[:subject_id]).distinct.pluck(:subject_id).first
+				entry[:name] = Subject.where(id: subject[:subject_id]).distinct.pluck(:name).first
+				entry[:units] = "#{Subject.where(id: subject[:subject_id]).distinct.pluck(:units).first}.0"				
+			end			
+			fake_subject_id = Subject.where(id: subject[:subject_id]).distinct.pluck(:fake_subject_id).join(",")
+			fake_subject_name = FakeSubject.where(id: fake_subject_id).distinct.pluck(:subject_code).join(",")		
+			entry[:prerequisites] = fake_subject_name
+
+			@subject_persem << entry
+		end
+    
+    @units = 0
+    @elective_count = 0
+    @entries.each_with_index do |entry, index|
+        @entry_subjects = entry[:subjects]
+      
+        @entry_subjects.each do |s|
+          @units = @units + s[:units].to_i
+        end
+    end
+    @units = @units - 12
+    
+    return @units
   end
 end
